@@ -7,6 +7,17 @@ from the open source pfSense® Community Edition code base and FreeBSD. It
 runs as a UEFI virtual machine today (KVM, QEMU, bhyve) and targets Raspberry
 Pi 4 class boards next.
 
+> **Highly experimental.** armsense is an early development snapshot. It may
+> or may not work, it has not been audited, and it is **not fit for
+> production use**. Use it only in a lab or a virtual machine you can afford
+> to lose.
+>
+> **No warranty.** armsense is provided "as is", without warranty of any
+> kind, express or implied, including the implied warranties of
+> merchantability, fitness for a particular purpose and non-infringement.
+> You use it entirely at your own risk; the authors and contributors are not
+> liable for any damage or loss arising from its use. See [LICENSE](LICENSE).
+
 * Project: https://labs.yadv.in/
 * Source: https://github.com/yadvlabs/armsense
 * License: [Apache License 2.0](LICENSE), see [NOTICE](NOTICE) for attribution
@@ -18,10 +29,11 @@ Pi 4 class boards next.
 
 ## Status
 
-armsense is a **development snapshot** (`v0.x`). It is meant for trying out
-in a virtual machine. Do not put it in front of anything you care about yet:
-the package repositories are unsigned and served from a development host,
-and the project has had no security review.
+armsense is a **development snapshot** (`v0.x`) and highly experimental. It
+is meant for trying out in a virtual machine. Do not put it in front of
+anything you care about: the package repositories are unsigned and served
+from a development host, the project has had no security review, and any
+release may fail to boot, fail to upgrade, or misbehave.
 
 
 | Target | State |

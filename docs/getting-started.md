@@ -1,5 +1,17 @@
 # Getting started
 
+> **Highly experimental.** armsense is an early development snapshot. It may
+> or may not work, it has not been audited, and it is **not fit for
+> production use**. Use it only in a lab or a virtual machine you can afford
+> to lose.
+>
+> **No warranty.** armsense is provided "as is", without warranty of any
+> kind, express or implied, including the implied warranties of
+> merchantability, fitness for a particular purpose and non-infringement.
+> You use it entirely at your own risk; the authors and contributors are not
+> liable for any damage or loss arising from its use. See [LICENSE](../LICENSE).
+
+
 ## Images
 
 Each build produces three files, named
