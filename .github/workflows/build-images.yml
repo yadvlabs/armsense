@@ -1,0 +1,46 @@
+name: Build images (self-hosted FreeBSD arm64)
+
+# Manual workflow for a self-hosted runner that is a FreeBSD arm64 host
+# prepared like the build VM (see buildvm/ and build/README.md): poudriere,
+# git, xmlstarlet installed, /usr/armsense with the three source clones.
+# It is not triggered by tags on purpose: without such a runner the job would
+# queue forever.
+
+on:
+  workflow_dispatch:
+    inputs:
+      steps:
+        description: "Phases to run (space separated: rename ports phase1 phase2 phase3)"
+        default: "rename ports phase2 phase3"
+
+jobs:
+  images:
+    runs-on: [self-hosted, freebsd, arm64]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh the overlay
+        run: |
+          set -e
+          mkdir -p /usr/armsense/overlay
+          cp -R build/. /usr/armsense/overlay/
+      - name: Run the requested phases
+        run: |
+          set -e
+          O=/usr/armsense/overlay
+          for s in ${{ inputs.steps }}; do
+            case "$s" in
+              rename) sh $O/src/rename-src.sh all ;;
+              ports)  sh $O/ports/prepare-ports.sh ;;
+              phase1) sh $O/vm/phase1-base.sh ;;
+              phase2) sh $O/vm/phase2-poudriere.sh all ;;
+              phase3) sh $O/vm/phase3-image.sh all ;;
+            esac
+          done
+          ls -la /usr/armsense/images
+      - uses: actions/upload-artifact@v4
+        with:
+          name: armsense-images
+          path: |
+            /usr/armsense/images/*.qcow2
+            /usr/armsense/images/*.iso
+          if-no-files-found: error

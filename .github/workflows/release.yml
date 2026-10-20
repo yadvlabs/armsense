@@ -1,0 +1,83 @@
+name: Release
+
+# Triggered by version tags (v0.1.0, v1.2.3-rc1, ...).  GitHub-hosted runners
+# cannot build the images (that needs a FreeBSD arm64 host, see
+# docs/release.md), so this workflow validates the repository, packages the
+# build overlay and branding assets, and opens the GitHub release.  Images
+# produced on the build VM are attached afterwards with buildvm/publish-release.sh.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Shell syntax (POSIX sh)
+        run: |
+          set -e
+          for f in $(git ls-files | grep -E '\.sh$'); do sh -n "$f"; done
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Branding assets are up to date
+        run: |
+          set -e
+          pip install --quiet pillow
+          python3 branding/make-logo.py > /dev/null
+          diff -u build/branding/www/logo.svg branding/out/gui/logo.svg
+          diff -u build/branding/armsense-mark.svg branding/out/armsense-mark.svg
+          diff -u build/branding/ascii-art/armsense-logo-small.txt branding/out/ascii-art/armsense-logo-small.txt
+
+  release:
+    name: Publish release
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package the build overlay
+        id: pkg
+        run: |
+          set -e
+          tag="${GITHUB_REF_NAME}"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          mkdir -p dist
+          tar -czf "dist/armsense-build-overlay-${tag}.tar.gz" build
+          cp build/branding/armsense-logo.svg build/branding/armsense-mark.svg dist/
+          (cd dist && sha256sum * > "SHA256SUMS-${tag}.txt")
+          ls -la dist
+
+      - name: Release notes
+        id: notes
+        run: |
+          set -e
+          tag="${GITHUB_REF_NAME}"
+          notes="docs/releases/${tag}.md"
+          if [ -f "$notes" ]; then
+            cp "$notes" dist/NOTES.md
+          else
+            {
+              echo "armsense ${tag}"
+              echo
+              echo "Build overlay and branding assets for this tag. Disk and installer images are built"
+              echo "on a FreeBSD arm64 build VM and attached separately; see docs/release.md."
+            } > dist/NOTES.md
+          fi
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: armsense ${{ steps.pkg.outputs.tag }}
+          body_path: dist/NOTES.md
+          prerelease: ${{ contains(steps.pkg.outputs.tag, '-') || startsWith(steps.pkg.outputs.tag, 'v0.') }}
+          files: |
+            dist/armsense-build-overlay-${{ steps.pkg.outputs.tag }}.tar.gz
+            dist/armsense-logo.svg
+            dist/armsense-mark.svg
+            dist/SHA256SUMS-${{ steps.pkg.outputs.tag }}.txt

@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint scripts and branding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Shell syntax (POSIX sh)
+        run: |
+          set -e
+          for f in $(git ls-files | grep -E '\.sh$|/files/gnid$|repoc\.in$'); do
+            echo "sh -n $f"; sh -n "$f"
+          done
+
+      - name: Configuration sanity
+        run: |
+          set -e
+          . build/armsense.conf
+          test -n "$PRODUCT_NAME" && test -n "$DEFAULT_PASSWORD_HASH"
+          test -f build/kernel/armsense
+          test -f build/branding/www/logo.svg
+          grep -q "$PRODUCT_NAME" build/ports/bulk-core.txt || grep -q '%%PRODUCT_NAME%%' build/ports/bulk-core.txt
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Regenerate branding assets and compare the vector/text outputs
+        run: |
+          set -e
+          pip install --quiet pillow
+          python3 branding/make-logo.py > /dev/null
+          for pair in \
+            "branding/out/gui/logo.svg build/branding/www/logo.svg" \
+            "branding/out/armsense-mark.svg build/branding/armsense-mark.svg" \
+            "branding/out/armsense-logo.svg build/branding/armsense-logo.svg" \
+            "branding/out/ascii-art/armsense-logo-small.txt build/branding/ascii-art/armsense-logo-small.txt" \
+            "branding/out/loader/brand-armsense.lua build/branding/loader/brand-armsense.lua" \
+            "branding/out/loader/logo-armsensebw.lua build/branding/loader/logo-armsensebw.lua"; do
+            set -- $pair
+            diff -u "$2" "$1"
+          done
+
+      - name: Branding audit of the build overlay
+        run: |
+          # The overlay may name upstream components only in comments and port
+          # paths; user-facing strings it installs must not carry vendor names.
+          ! grep -rn 'Netgate' build/branding/www build/branding/ascii-art build/branding/loader
