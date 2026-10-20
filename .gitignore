@@ -1,0 +1,34 @@
+# Upstream clones used for investigation (several GB); re-clone with the pinned branches.
+extras/
+
+# Build VM: disk, firmware vars, downloaded images, keys, runtime state.
+buildvm/*.qcow2
+buildvm/*.raw
+buildvm/efivars*.fd
+buildvm/downloads/
+buildvm/images/
+buildvm/packages/
+buildvm/www/
+buildvm/id_ed25519
+buildvm/id_ed25519.pub
+buildvm/known_hosts
+buildvm/seed.iso
+buildvm/seed/
+buildvm/*.log
+buildvm/*.pid
+buildvm/*.sock
+
+# Test VMs: disks, firmware vars, consoles, scratch output.
+testvm/*.qcow2
+testvm/*.iso
+testvm/efivars*.fd
+testvm/*.log
+testvm/*.pid
+testvm/*.sock
+testvm/*.html
+testvm/cj.txt
+
+# Third-party reference material (not ours to redistribute).
+branding/ref/
+
+.DS_Store
