@@ -1,0 +1,52 @@
+usr/local/captiveportal/index.php:139:	<span> <i>Made with &hearts; by</i> <strong>Netgate</strong></span>
+usr/local/www/system_register.php:46:   " You may have already registered, or it may be a pre-registered Netgate appliance.");
+usr/local/www/system_register.php:50:$pghelp_ok = gettext('pfSense<sup>&reg;</sup> Community Edition software may be upgraded to pfSense<sup>&reg;</sup> Plus software by purchasing an upgrade from the Netgate store here: ' .
+usr/local/www/system_register.php:55:'<br />If you do not receive the activation token email within a few minutes of placing the order, please contact <a href="https://go.netgate.com">Netgate TAC</a>.');
+usr/local/www/system_register.php:58:   "If you believe that to be incorrect, please contact Netgate TAC support for assistance by visiting %1s."),
+usr/local/www/system_register.php:63:   '<a href="https://twitter.com/NetgateUSA" target="_blank">Twitter</a>',
+usr/local/www/system_register.php:64:   '<a href="https://www.reddit.com/r/Netgate/" target="_blank">Reddit</a>'
+usr/local/www/system_register.php:70:   "Please contact Netgate TAC support for assistance by visiting %1s"), '<a href="https://go.netgate.com" target="_blank">https://go.netgate.com</a>');
+usr/local/www/50x.html:66:						<a target="_blank" href="https://netgate.com">Netgate</a>.
+usr/local/www/services_acb_settings.php:146:	    "Encryption Password below and then securely uploads the encrypted backup over HTTPS to Netgate servers.");
+usr/local/www/services_acb_settings.php:260:	"This may allow Netgate TAC to recover a device key should it become lost.");
+usr/local/www/404.html:64:						<a target="_blank" href="https://netgate.com">Netgate</a>.
+usr/local/www/system_advanced_misc.php:528:	'Netgate Device ID',
+usr/local/www/system_advanced_misc.php:529:	'Do NOT send Netgate Device ID with user agent',
+usr/local/www/system_advanced_misc.php:531:))->setHelp('Enable this option to not send Netgate Device ID as part of User-Agent header.');
+usr/local/www/wizards/setup_wizard.xml:36:		<p><strong>pfSense® software is developed and maintained by Netgate®<strong></p>
+usr/local/www/wizards/setup_wizard.xml:54:	<title>Netgate® Global Support is available 24/7</title>
+usr/local/www/wizards/setup_wizard.xml:59:		<p>We offer several support subscription plans tailored to fit different environment sizes and requirements. Many companies around the world choose Netgate support because:</p>
+usr/local/www/wizards/setup_wizard.xml:830:		<p><a target='_blank' href='https://www.netgate.com/pfw2'><strong><span style="font-size:16px">Click here</span></strong></a> to learn about Netgate 24/7/365 support services.</p>
+usr/local/www/wizards/setup_wizard.xml:835:				<li>Learn more about Netgate's product line, services, and pfSense software from our <a target='_blank' href='https://www.netgate.com/pfw3'>website</a></li>
+usr/local/www/wizards/setup_wizard.xml:836:				<li>To learn about Netgate appliances and other offers, <a target='_blank' href='https://www.netgate.com/pfw4'>visit our store</a></li>
+usr/local/www/widgets/widgets/system_information.widget.php:216:					    gettext("Netgate Device ID:") .
+usr/local/www/widgets/widgets/netgate_services_and_support.widget.php:25:	This widget transmits the Netgate Device ID to Netgate's REST API, and retrieves the support information.
+usr/local/www/widgets/widgets/netgate_services_and_support.widget.php:43:	// Retrieve the support data from Netgate.com if
+usr/local/www/widgets/widgets/netgate_services_and_support.widget.php:74:// Poll the Netgate server to obtain the JSON/HTML formatted support information
+usr/local/pfSense/include/www/status_output.inc:194:			$firewall_info .= "<br/>Netgate Device ID: " . htmlspecialchars($ngid);
+etc/pfSense-rc:525:# Copy default openssl config file and Netgate CA
+etc/rc.bootup:128:	echo "Importing the network settings from the Netgate Installer...";
+etc/rc.banner:61:printf("%s: %s\n\n", gettext("Netgate Device ID"), system_get_uniqueid());
+etc/inc/pkg-utils.inc:1604:		"messages" => [gettext('Could not connect to Netgate servers. Please try again later.')]
+etc/inc/auth.inc:2352:			'<a target="_blank" href="https://netgate.com">Netgate. </a>' . ' &copy; ESF ' . g_get('product_copyright_years') .
+etc/inc/system.inc:3387:			return (array('name' => 'FW7541', 'descr' => 'Netgate FW7541'));
+etc/inc/system.inc:3391:			return (array('name' => 'APU', 'descr' => 'Netgate APU'));
+etc/inc/system.inc:3410:			$result['descr'] = 'Netgate ' . $result['model'];
+etc/inc/system.inc:3414:			return (array('name' => 'SG-2220', 'descr' => 'Netgate SG-2220'));
+etc/inc/system.inc:3417:			return (array('name' => 'RCC', 'descr' => 'Netgate XG-2758'));
+etc/inc/system.inc:3420:			return (array('name' => '5100', 'descr' => 'Netgate 5100'));
+etc/inc/system.inc:3440:			$result['descr'] = 'Netgate ' . $result['model'];
+etc/inc/copyget.inc:25:	Provides the functionality required to fetch updated copyright information from Netgate
+etc/inc/copyget.inc:36:// Poll the Netgate server to obtain the JSON/HTML formatted support information
+etc/inc/copyget.inc:75:// Retrieve the copyright data from Netgate.com if
+etc/inc/globals.inc:83:	'product_label_html' => 'Netgate pfSense<sup>&#174;</sup>',
+etc/inc/upgrade_config.inc:5206:/* Force the Netgate Services and Support widget to be active on upgrade.
+etc/inc/captiveportal.inc:188:	  <span> <i>Made with &hearts; by</i> <strong>Netgate</strong></span>
+etc/inc/config.console.inc:739:	/* Read the settings from the Netgate Installer. */
+etc/inc/config.console.inc:776:	write_config(gettext("Network settings imported from the Netgate Installer"));
+etc/inc/copynotice.inc:37: * The copyright text may have been downloaded from the Netgate server, but if not the default text defined here
+etc/inc/copynotice.inc:61:					All logos, text, and content of ESF and/or Netgate, including underlying HTML code, designs, and graphics used and/or depicted herein are protected under United States and international copyright and trademark laws and treaties, and may not be used or reproduced without the prior express written permission of ESF and/or Netgate.
+etc/inc/copynotice.inc:64:					"pfSense" is a registered trademark of ESF, exclusively licensed to Netgate, and may not be used without the prior express written permission of ESF and/or Netgate.  All other trademarks shown herein are owned by the respective companies or persons indicated.
+etc/inc/copynotice.inc:68:					pfSense<sup>&copy;</sup> software is open source and distributed under the Apache 2.0 license.  However, no commercial distribution of ESF and/or Netgate software is allowed without the prior written consent of ESF and/or Netgate.
+etc/inc/copynotice.inc:71:					ESF and/or Netgate make no warranty of any kind, including but not limited to the implied warranties of merchantability and fitness for a particular purpose. ESF and/or Netgate shall not be liable for errors contained herein or for any direct, indirect, special, incidental or consequential damages in connection with the furnishing, performance, or use of any software, information, or material.
+etc/inc/copynotice.inc:78:					No part of ESF and/or Netgate's information or materials may be published, distributed, reproduced, publicly displayed, used to create derivative works, or translated to another language, without the prior written consent of ESF and/or Netgate. The information contained herein is subject to change without notice.

@@ -1,0 +1,265 @@
+usr/local/bin/parser_dhcpv6_leases_tester.php:25:if ($is_pfSense) {
+usr/local/bin/parser_dhcpv6_leases_tester.php:27:		$is_pfSense = false;
+usr/local/bin/parser_dhcpv6_leases_tester.php:31:if ($is_pfSense) {
+usr/local/bin/parser_dhcpv6_leases_tester.php:34:	/* Handle situation where we use source files on a non-running pfSense system.
+usr/local/bin/parser_dhcpv6_leases_tester.php:43:} elseif ($is_pfSense) {
+usr/local/bin/parser_dhcpv6_leases_tester.php:71:if ($is_pfSense) {
+usr/local/bin/parser_ipv6_tester.php:25:if ($is_pfSense) {
+usr/local/bin/parser_ipv6_tester.php:27:		$is_pfSense = false;
+usr/local/bin/parser_ipv6_tester.php:31:if ($is_pfSense) {
+usr/local/bin/parser_ipv6_tester.php:35:	/* Handle situation where we use source files on a non-running pfSense system.
+usr/local/bin/parser_readme.md:1:# pfSense-dhcpv6-gui-leases-patch
+usr/local/bin/parser_readme.md:11:'php -f' is optional on a pfSense system.
+usr/local/bin/parser_readme.md:31:DHCPv6 Status Leases page of pfSense.
+usr/local/bin/parser_readme.md:38:To parse an ISC DHCPv6 lease file (as used by pfSense) call e.g.:<br/>
+usr/local/bin/parser_readme.md:41:#### Running on a pfSense system
+usr/local/bin/parser_readme.md:42:* 'php -f' is optional on a pfSense system.
+usr/local/bin/parser_readme.md:43:* &lt;file&gt; is optional on a pfSense system.<br/>
+usr/local/bin/parser_readme.md:48:#### Running on a non-pfSense system
+usr/local/bin/parser_readme.md:63:own and peer status. That means there are two DHCP servers/pfSenses sharing a
+usr/local/bin/parser_readme.md:84:https://github.com/al-right/pfSense-dhcpv6-gui-leases-patch<br/>
+usr/local/bin/kea2fib6:386:    /* Bring in pfSense helpers */
+usr/local/sbin/ovpn_auth_verify_async:28:#----------- pfSense Arguments 
+usr/local/sbin/mpd.script:22:## pfSense specific variables:
+usr/local/www/vpn_l2tp_users.php:47:		pfSenseHeader("vpn_l2tp_users.php");
+usr/local/www/system_advanced_sysctl.php:65:		pfSenseHeader("system_advanced_sysctl.php");
+usr/local/www/system_register.php:50:$pghelp_ok = gettext('pfSense<sup>&reg;</sup> Community Edition software may be upgraded to pfSense<sup>&reg;</sup> Plus software by purchasing an upgrade from the Netgate store here: ' .
+usr/local/www/system_register.php:54:'<br /><br>Registration ensures you have access to the services included with pfSense<sup>&reg;</sup> Plus software.' .
+usr/local/www/system_register.php:67:$pghelp_success = gettext("Your firewall has been successfully registered. On your next visit to the System/Update page, select pfSense<sup>&reg;</sup> Plus software from the list of repositories.");
+usr/local/www/pkg_mgr_install.php:47:// After an installation or removal has been started (mwexec(/usr/local/sbin/pfSense-upgrade-GUI.sh . . . )) AJAX calls
+usr/local/www/pkg_mgr_install.php:702:		 * If pfSense-upgrade failed to run, present log to user
+usr/local/www/pkg_mgr_install.php:824:			$('#uptodate').html('<span class="text-danger">' + 'Another instance of pfSense-upgrade is running.  Please try again in a few moments.' + "</span>");
+usr/local/www/services_unbound_acls.php:43:	pfSenseHeader("services_unbound_acls.php");
+usr/local/www/services_unbound_acls.php:51:		pfSenseHeader("services_unbound_acls.php");
+usr/local/www/services_unbound_acls.php:144:			pfSenseHeader("/services_unbound_acls.php");
+usr/local/www/vpn_openvpn_client.php:65:		pfSenseHeader("vpn_openvpn_client.php");
+usr/local/www/vpn_openvpn_client.php:1100:	))->setHelp('If this option is set, pfSense will use DNS servers assigned by remote OpenVPN server for its own purposes (including the DNS Forwarder/DNS Resolver).');
+usr/local/www/system_groupmanager.php:88:		pfSenseHeader("system_groupmanager.php");
+usr/local/www/system_groupmanager.php:110:		pfSenseHeader("system_groupmanager.php");
+usr/local/www/50x.html:64:						<a target="_blank" href="https://pfsense.org">pfSense</a>
+usr/local/www/vpn_l2tp_users_edit.php:115:		pfSenseHeader("vpn_l2tp_users.php");
+usr/local/www/system_certmanager.php:102:	pfSenseHeader("system_certmanager.php");
+usr/local/www/system_certmanager.php:674:		pfSenseHeader("system_certmanager.php");
+usr/local/www/status_interfaces.php:105:	$script_file = '/usr/local/sbin/pfSense-dhclient-script';
+usr/local/www/xmlrpc.php:340:				// Note : This code can be safely deleted once #97 fix has been applied and deployed to pfSense stable release.
+usr/local/www/404.html:62:						<a target="_blank" href="https://pfsense.org">pfSense</a>
+usr/local/www/system_camanager.php:66:	pfSenseHeader("system_camanager.php");
+usr/local/www/system_camanager.php:335:			pfSenseHeader("system_camanager.php");
+usr/local/www/system.php:535:	['placeholder' => 'pfSense']
+usr/local/www/system.php:762:		if ($('#webguicss').val().startsWith("pfSense")) {
+usr/local/www/system_groupmanager_addprivs.php:101:		pfSenseHeader("system_groupmanager.php?act=edit&groupid={$groupid}");
+usr/local/www/system_groupmanager_addprivs.php:254:			$desc = preg_replace("/pfSense/i", g_get('product_label'), $pdata['descr']);
+usr/local/www/vpn_openvpn_csc.php:62:		pfSenseHeader("vpn_openvpn_csc.php");
+usr/local/www/system_authservers.php:116:		pfSenseHeader("system_authservers.php");
+usr/local/www/system_authservers.php:436:		pfSenseHeader("system_authservers.php");
+usr/local/www/system_crlmanager.php:73:	pfSenseHeader("system_camanager.php");
+usr/local/www/system_crlmanager.php:132:			pfSenseHeader("system_crlmanager.php");
+usr/local/www/system_crlmanager.php:184:			pfSenseHeader("system_crlmanager.php");
+usr/local/www/system_crlmanager.php:192:			pfSenseHeader("system_crlmanager.php");
+usr/local/www/system_crlmanager.php:203:			pfSenseHeader("system_crlmanager.php");
+usr/local/www/system_crlmanager.php:299:		pfSenseHeader("system_crlmanager.php");
+usr/local/www/system_usermanager.php:112:		pfSenseHeader("system_usermanager.php");
+usr/local/www/system_usermanager.php:183:		pfSenseHeader("system_usermanager.php");
+usr/local/www/system_usermanager.php:529:		pfSenseHeader("system_usermanager.php");
+usr/local/www/system_usermanager.php:1137:		if ($('#webguicss').val().startsWith("pfSense")) {
+usr/local/www/interfaces_ppps_edit.php:507:	// get_country_name is in pfSense-utils.inc
+usr/local/www/system_certmanager_renew.php:64:		pfSenseHeader("system_certmanager.php");
+usr/local/www/system_certmanager_renew.php:69:	pfSenseHeader($returnpage);
+usr/local/www/system_certmanager_renew.php:88:		pfSenseHeader($returnpage);
+usr/local/www/head.inc:434:	if (g_get('product_name') == "pfSense") {
+usr/local/www/head.inc:441:	$help_menu[] = array(gettext("pfSense Book"), "https://redirects.netgate.com/book");
+usr/local/www/head.inc:444:		$help_menu[] = array(gettext("Upgrade to pfSense Plus"), "https://redirects.netgate.com/upgrade");
+usr/local/www/system_user_settings.php:180:		if ($('#webguicss').val().startsWith("pfSense")) {
+usr/local/www/system_usermanager_addprivs.php:48:	pfSenseHeader("system_usermanager.php");
+usr/local/www/system_usermanager_addprivs.php:262:			$desc = preg_replace("/pfSense/i", g_get('product_label'), $pdata['descr']);
+usr/local/www/services_captiveportal.php:1017:	'Use RADIUS pfSense-Max-Total-Octets attribute',
+usr/local/www/services_captiveportal.php:1019:))->setHelp('When enabled, clients will be disconnected after exceeding the amount of traffic, inclusive of both downloads and uploads, retrieved from the RADIUS pfSense-Max-Total-Octets attribute.');
+usr/local/www/services_captiveportal.php:1024:	'Use RADIUS pfSense-Bandwidth-Max-Up and pfSense-Bandwidth-Max-Down attributes',
+usr/local/www/services_captiveportal.php:1026:))->setHelp('When enabled, the bandwidth assigned to a client will be limited to the values retrieved from the RADIUS pfSense-Bandwidth-Max-Up and ' .
+usr/local/www/services_captiveportal.php:1027:			'pfSense-Bandwidth-Max-Down attributes or from the comparable WISPr attributes.');
+usr/local/www/easyrule.php:9: * Originally Sponsored By Anathematic @ pfSense Forums
+usr/local/www/interfaces.php:2309:	'pfSense Default',
+usr/local/www/interfaces.php:2311:	'pfSense'
+usr/local/www/interfaces.php:3970:		if (val == "pfSense")	setPresetsnow("60", "15", "0", "", "", "1");
+usr/local/www/vpn_openvpn_server.php:74:		pfSenseHeader("vpn_openvpn_server.php");
+usr/local/www/logo.svg:2:	<title id="pfsense-logo-svg">pfSense Logo</title>
+usr/local/www/pkg_edit.php:250:				pfSenseHeader($pkg['aftersaveredirect']);
+usr/local/www/pkg_edit.php:252:				pfSenseHeader("pkg_edit.php?xml={$xml}&id=0");
+usr/local/www/pkg_edit.php:254:				pfSenseHeader("pkg.php?xml=" . $xml);
+usr/local/www/system_update_settings.php:170:	if (is_dir("/root/pfsense/pfSenseGITREPO/pfSenseGITREPO")) {
+usr/local/www/system_update_settings.php:171:		exec("cd /root/pfsense/pfSenseGITREPO/pfSenseGITREPO && /usr/local/bin/git config remote.origin.url", $output_str);
+usr/local/www/system_update_settings.php:185:	if (is_dir("/root/pfsense/pfSenseGITREPO/pfSenseGITREPO")) {
+usr/local/www/system_update_settings.php:186:		exec("cd /root/pfsense/pfSenseGITREPO/pfSenseGITREPO && /usr/local/bin/git branch", $output_str);
+usr/local/www/wizards/traffic_shaper_wizard_dedicated.xml:30:		<title>pfSense Traffic Shaper</title>
+usr/local/www/wizards/traffic_shaper_wizard_dedicated.xml:32:		<description>This wizard will provide guidance through setting up the pfSense traffic shaper.&lt;br/&gt;&lt;br/&gt; The wizard may be stopped at any time by clicking the logo image at the top of the screen.
+usr/local/www/wizards/setup_wizard.xml:29:	<title>pfSense Setup</title>
+usr/local/www/wizards/setup_wizard.xml:33:		<p><h4>Welcome to pfSense® software!</h4></p>
+usr/local/www/wizards/setup_wizard.xml:34:		<p>This wizard will provide guidance through the initial configuration of pfSense.</p>
+usr/local/www/wizards/setup_wizard.xml:36:		<p><strong>pfSense® software is developed and maintained by Netgate®<strong></p>
+usr/local/www/wizards/setup_wizard.xml:81:	<description>On this screen the general pfSense parameters will be set.</description>
+usr/local/www/wizards/setup_wizard.xml:585:				write_config(gettext("WAN interface configuration saved via pfSense setup wizard."));
+usr/local/www/wizards/setup_wizard.xml:750:	<description>Click 'Reload' to reload pfSense with new changes.</description>
+usr/local/www/wizards/setup_wizard.xml:802:		write_config(gettext("Configuration saved on completion of the pfSense setup wizard."));
+usr/local/www/wizards/setup_wizard.xml:823:		<p><h4>Congratulations! pfSense is now configured.</h4></p>
+usr/local/www/wizards/setup_wizard.xml:835:				<li>Learn more about Netgate's product line, services, and pfSense software from our <a target='_blank' href='https://www.netgate.com/pfw3'>website</a></li>
+usr/local/www/wizards/setup_wizard.xml:837:				<li>Become part of the pfSense community. Visit our <a target='_blank' href='https://www.netgate.com/pfw5'>forum</a></li>
+usr/local/www/wizards/traffic_shaper_wizard_multi_all.xml:30:		<title>pfSense Traffic Shaper</title>
+usr/local/www/wizards/traffic_shaper_wizard_multi_all.xml:32:		<description>This wizard will provide guidance through setting up the pfSense traffic shaper. &lt;br/&gt;&lt;br/&gt; The wizard may be stopped at any time by clicking the logo image at the top of the screen.
+usr/local/www/widgets/include/disks.inc:24:use pfSense\Services\Filesystem\{
+usr/local/www/widgets/widgets/disks.widget.php:25:// pfSense includes
+usr/local/pfSense/include/www/system_register.inc:5: * part of pfSense plus (https://www.netgate.com)
+usr/local/pfSense/include/www/system_advanced_notifications.inc:300:				pfSenseHeader("system_advanced_notifications.php");
+usr/local/pfSense/include/www/services_dhcp.inc:565:	if (is_package_installed('pfSense-pkg-bind') &&
+usr/local/pfSense/include/www/services_dhcp.inc:620:	if (is_package_installed('pfSense-pkg-bind') &&
+usr/local/pfSense/include/www/system_advanced_sysctl.inc:75:			pfSenseHeader("system_advanced_sysctl.php");
+usr/local/pfSense/include/Services/Filesystem/Filesystem.php:22:namespace pfSense\Services\Filesystem;
+usr/local/pfSense/include/Services/Filesystem/Filesystems.php:22:namespace pfSense\Services\Filesystem;
+usr/local/pfSense/include/Services/Filesystem/Filesystems.php:24:use pfSense\Services\Filesystem\Provider\{
+usr/local/pfSense/include/Services/Filesystem/Provider/SystemProvider.php:22:namespace pfSense\Services\Filesystem\Provider;
+usr/local/pfSense/include/Services/Filesystem/Provider/AbstractProvider.php:22:namespace pfSense\Services\Filesystem\Provider;
+usr/local/share/pfSense/ssl/openssl.cnf:12:# pfSense: default SAN value if $ENV::SAN is not defined
+etc/rc.update_pkg_metadata:26:# Read product_name from $g, defaults to pfSense
+etc/rc.update_pkg_metadata:27:product_name="$(/usr/local/sbin/read_global_var product_name pfSense)"
+etc/pfSense-rc.shutdown:3:# pfSense-rc.shutdown
+etc/pfSense-rc.shutdown:28:# Read product_label from $g, defaults to pfSense
+etc/pfSense-rc.shutdown:29:product_label=$(/usr/local/sbin/read_global_var product_label pfSense)
+etc/sshd:70:/* Include default configuration for pfSense */
+etc/rc.bootup:169:		echo "\npfSense cannot continue without at least one Network Interface Card.\n";
+etc/pfSense-rc:3:# pfSense-rc
+etc/pfSense-rc:33:# Example: pfSense/ROOT/default
+etc/pfSense-rc:59:# Example: pfSense
+etc/pfSense-rc:135:# Read product_name from $g, defaults to pfSense
+etc/pfSense-rc:137:product_name=$(/usr/local/bin/php -n /usr/local/sbin/read_global_var product_name pfSense)
+etc/pfSense-rc:138:product_label=$(/usr/local/bin/php -n /usr/local/sbin/read_global_var product_label pfSense)
+etc/pfSense-rc:147:		if /sbin/zpool status pfSense | grep -q mmcsd0 > /dev/null; then
+etc/pfSense-rc:388:cat /usr/local/share/pfSense/ascii-art/pfsense-logo-small.txt
+etc/pfSense-rc:513:	# - do not call pfSense-upgrade on boot
+etc/rc.initial:55:# Read product_name from $g, defaults to pfSense
+etc/rc.initial:59:	product_name=$(/usr/local/sbin/read_global_var product_name pfSense)
+etc/rc.initial:62:# Read product_label from $g, defaults to pfSense
+etc/rc.initial:66:	product_label=$(/usr/local/sbin/read_global_var product_label pfSense)
+etc/rc.banner:6: * part of pfSense
+etc/rc.php_ini_setup:129:# pfSense extensions
+etc/rc.php_ini_setup:130:PHPMODULES="$PHPMODULES pfSense"
+etc/rc.php_ini_setup:213:include_path = ".:/etc/inc:/usr/local/pfSense/include:/usr/local/pfSense/include/www:/usr/local/www:/usr/local/captiveportal:/usr/local/pkg:/usr/local/www/classes:/usr/local/www/classes/Form:/usr/local/share/pear:/usr/local/share/openssl_x509_crl/"
+etc/pfSense.obsoletedfiles:5:/boot/brand-pfSense.4th
+etc/pfSense.obsoletedfiles:10:/boot/logo-pfSensebw.4th
+etc/pfSense.obsoletedfiles:91:/etc/pfSense.mtree
+etc/pfSense.obsoletedfiles:657:/usr/local/etc/pkg/repos/pfSense-installer.conf
+etc/pfSense.obsoletedfiles:876:/usr/local/sbin/pfSense-upgrade-GUI.sh
+etc/pfSense.obsoletedfiles:945:/usr/local/share/pfSense/custom_logos/logo-black.png
+etc/pfSense.obsoletedfiles:946:/usr/local/share/pfSense/custom_logos/logo.png
+etc/pfSense.obsoletedfiles:947:/usr/local/share/pfSense/keys/pkg/revoked/.empty
+etc/pfSense.obsoletedfiles:948:/usr/local/share/pfSense/keys/pkg/trusted/.empty
+etc/pfSense.obsoletedfiles:949:/usr/local/share/pfSense/pfSense-repo-devel.conf
+etc/pfSense.obsoletedfiles:950:/usr/local/share/pfSense/post_upgrade_command
+etc/pfSense.obsoletedfiles:951:/usr/local/share/pfSense/post_upgrade_command.php
+etc/pfSense.obsoletedfiles:952:/usr/local/share/pfSense/pre_upgrade_command
+etc/pfSense.obsoletedfiles:1298:/usr/sbin/pc-sysinstall/examples/pfSense.cfg
+etc/pfSense.obsoletedfiles:1299:/usr/sbin/pc-sysinstall/examples/pfSense.cfg.zfs
+etc/pfSense-devd.conf:2:# pfSense-devd.conf
+etc/inc/meta.inc:26: * The meta data format used in pfSense is denoted using markers
+etc/inc/pkg-utils.inc:1310:	// This query mirrors pfSense-upgrade logic.
+etc/inc/pkg-utils.inc:1359:	// Check the cache; pfSense-upgrade returns 2 when there's a new version.
+etc/inc/pkg-utils.inc:1400:		// Check additional packages to mirror pfSense-upgrade's logic.
+etc/inc/system.inc:2650:	$ntpcfg .= "# pfSense ntp configuration file \n";
+etc/inc/services.inc:4836:			/* Just the pfSense WAN might get a CGN address from an ISP. */
+etc/inc/services.inc:5175:system := 1     # pfSense
+etc/inc/services.inc:5631:		$crontab_contents .= "# pfSense specific crontab entries\n";
+etc/inc/certs.inc:56:	'high'   => gettext('High: AES-256 + SHA256 (pfSense Software, FreeBSD, Linux, Windows 10)'),
+etc/inc/openvpn.inc:83: * provide one in the pfSense UI due to a bogus
+etc/inc/pfsense-utils.inc:141:/****f* pfsense-utils/pfSenseHeader
+etc/inc/pfsense-utils.inc:143: *   pfSenseHeader
+etc/inc/pfsense-utils.inc:149:function pfSenseHeader($text) {
+etc/inc/pfsense-utils.inc:183:	// List pfSense files, then any BETA files followed by any user-contributed files
+etc/inc/pfsense-utils.inc:196:				} else if (strpos($css, "pfSense") != 0) {
+etc/inc/pfsense-utils.inc:2825: * it is roughly 4 times faster then our existing pfSense parser but due to the large
+etc/inc/pfsense-utils.inc:2827: * The reason we do not use it for pfSense is that it does not know about array fields
+etc/inc/pfsense-utils.inc:2940:	$country_names_xml = "/usr/local/share/pfSense/iso_3166-1_list_en.xml";
+etc/inc/pfsense-utils.inc:4011:	textdomain("pfSense");
+etc/inc/pfsense-utils.inc:4012:	bindtextdomain("pfSense", "/usr/local/share/locale");
+etc/inc/pfsense-utils.inc:4013:	bind_textdomain_codeset("pfSense", $lang);
+etc/inc/auth.inc:460:	// pfSense < 2.3 password hashing, see https://redmine.pfsense.org/issues/4120
+etc/inc/upgrade_config.inc:5035:/* Previous versions of pfSense had cryptodev built into the kernel.
+etc/inc/upgrade_config.inc:7348: * config version was already taken by newer pfSense.
+etc/inc/interfaces.inc:4469:					// FIXME: Add IPv6 Support to the pfSense module
+etc/inc/interfaces.inc:5607:	script "/usr/local/sbin/pfSense-dhclient-script";
+etc/inc/interfaces.inc:5725:	$dhclientconf .= "\tscript \"/usr/local/sbin/pfSense-dhclient-script\";\n";
+etc/inc/authgui.inc:70:		pfSenseHeader("/{$page}");
+etc/inc/authgui.inc:96:	pfSenseHeader($_SERVER['REQUEST_URI']);
+etc/inc/config.lib.inc:1346:			file_notice("config.xml", $log_message, "pfSenseConfigurator", "", 1, true);
+etc/inc/config.lib.inc:1391:			file_notice("config.xml", $log_message, "pfSenseConfigurator", "", 1, true);
+etc/inc/r53.class:6:* that integrates well with pfSense. Based on the original r53.class by
+etc/inc/util.inc:4484: *    is equal to the number of other components. If not, prepend this as "nn:00" (all pfSense builds are little-endian).
+etc/inc/copynotice.inc:64:					"pfSense" is a registered trademark of ESF, exclusively licensed to Netgate, and may not be used without the prior express written permission of ESF and/or Netgate.  All other trademarks shown herein are owned by the respective companies or persons indicated.
+etc/inc/copynotice.inc:68:					pfSense<sup>&copy;</sup> software is open source and distributed under the Apache 2.0 license.  However, no commercial distribution of ESF and/or Netgate software is allowed without the prior written consent of ESF and/or Netgate.
+etc/inc/syslog.inc:447:	/* write syslog config to pfSense.conf */
+etc/inc/syslog.inc:448:	if (!@file_put_contents("{$g['varetc_path']}/syslog.d/pfSense.conf", $syslogconf)) {
+etc/inc/syslog.inc:659:	if (!@file_put_contents("{$g['varetc_path']}/newsyslog.conf.d/pfSense.conf", $newsyslogconf)) {
+etc/inc/easyrule.inc:9: * Originally Sponsored By Anathematic @ pfSense Forums
+etc/inc/priv.defs.inc:4: * Generated by pfSense/tools/scripts/generate-privdefs.php
+etc/inc/parser_dhcpv6_leases.inc:114:			// Not used in the pfSense UI at the moment.
+etc/inc/parser_dhcpv6_leases.inc:148:		// case IA_TA: // Not implemented in pfSense.
+etc/inc/captiveportal.inc:1228:		(eg. reply in RADIUS Access-Reject) are more important than pfSense error messages.
+etc/inc/dyndns.class:25:	 * PHP.updateDNS (pfSense version)
+etc/inc/dyndns.class:160:	 * DNSexit/OpenDNS support and multiwan extension for pfSense by Ermal Luçi and Koen Zomers
+etc/inc/dyndns.class:1524:					$post_data['comment'] = "Updated by pfSense:$this->_dnsUser on " . date('c');
+etc/inc/dyndns.class:3289:		 *      | Written Specifically for pfSense (https://www.pfsense.org) may
+etc/inc/dyndns.class:3290:		 *      | work with other systems. pfSense base is FreeBSD.
+etc/inc/globals.inc:81:	'product_name' => 'pfSense',
+etc/inc/globals.inc:82:	'product_label' => 'pfSense',
+etc/inc/globals.inc:83:	'product_label_html' => 'Netgate pfSense<sup>&#174;</sup>',
+etc/inc/globals.inc:101:	'pkg_prefix' => 'pfSense-pkg-',
+etc/inc/globals.inc:208:/* Cache file used to store pfSense version */
+etc/inc/globals.inc:904:// source pfSense Plus specific globals last
+etc/inc/globals.inc:909:add_default_system_package(['name' => 'pfSense-pkg-System_Patches']);
+etc/inc/gwlb.inc:1634:	 *	This facilitates services running on pfSense itself and are not handled by a PBR to continue working.
+etc/phpshellsessions/gitsync:190:if (is_dir("$CODIR/pfSenseGITREPO/pfSenseGITREPO")) {
+etc/phpshellsessions/gitsync:191:	exec("cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} config remote.origin.url", $output_str, $ret);
+etc/phpshellsessions/gitsync:218:if (is_dir("$CODIR/pfSenseGITREPO/pfSenseGITREPO")) {
+etc/phpshellsessions/gitsync:219:	exec("cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} branch -r", $branch_list, $ret);
+etc/phpshellsessions/gitsync:319:	echo "===> Backing up current pfSense information...\n";
+etc/phpshellsessions/gitsync:332:		"cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} branch " . escapeshellarg($branch) . " 2>/dev/null",
+etc/phpshellsessions/gitsync:333:		"cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} checkout -f " . escapeshellarg($branch) . " 2>/dev/null",
+etc/phpshellsessions/gitsync:334:		"cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} reset --hard " . escapeshellarg(trim(file_get_contents("/etc/version.lastcommit")))
+etc/phpshellsessions/gitsync:338:		"cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} branch " . escapeshellarg($branch) . " " . escapeshellarg("origin/{$branch}") . " 2>/dev/null",
+etc/phpshellsessions/gitsync:339:		"cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} checkout -f " . escapeshellarg($branch) . " 2>/dev/null",
+etc/phpshellsessions/gitsync:340:		"cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} reset --hard " . escapeshellarg("origin/{$branch}")
+etc/phpshellsessions/gitsync:345:if (is_dir("$CODIR/pfSenseGITREPO/pfSenseGITREPO")) {
+etc/phpshellsessions/gitsync:347:	exec("cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} config remote.origin.url " . escapeshellarg($GIT_REPO));
+etc/phpshellsessions/gitsync:348:	exec("cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} fetch");
+etc/phpshellsessions/gitsync:349:	exec("cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} clean -f -x -d");
+etc/phpshellsessions/gitsync:352:	exec("/bin/mkdir -p $CODIR/pfSenseGITREPO");
+etc/phpshellsessions/gitsync:353:	echo "Executing cd $CODIR/pfSenseGITREPO && {$GIT_BIN} clone $GIT_REPO pfSenseGITREPO\n";
+etc/phpshellsessions/gitsync:354:	exec("cd $CODIR/pfSenseGITREPO && {$GIT_BIN} clone " . escapeshellarg($GIT_REPO) . " pfSenseGITREPO");
+etc/phpshellsessions/gitsync:355:	if (is_dir("$CODIR/pfSenseGITREPO/pfSense")) {
+etc/phpshellsessions/gitsync:356:		exec("/bin/mv $CODIR/pfSenseGITREPO/pfSense $CODIR/pfSenseGITREPO/pfSenseGITREPO");
+etc/phpshellsessions/gitsync:358:	if (is_dir("$CODIR/pfSenseGITREPO/mainline")) {
+etc/phpshellsessions/gitsync:359:		exec("/bin/mv $CODIR/pfSenseGITREPO/mainline $CODIR/pfSenseGITREPO/pfSenseGITREPO");
+etc/phpshellsessions/gitsync:366:	exec("cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} pull " . escapeshellarg($merge_repo['repo']) . " " . escapeshellarg($merge_repo['branch']), $output_str, $ret);
+etc/phpshellsessions/gitsync:384:	$updated_files = shell_exec("cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} diff --name-only --relative=src " . escapeshellarg($old_revision));
+etc/phpshellsessions/gitsync:397:	exec("cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} rev-parse -q --verify HEAD > /etc/version.gitsync");
+etc/phpshellsessions/gitsync:401:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/etc/crontab");
+etc/phpshellsessions/gitsync:402:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/etc/master.passwd");
+etc/phpshellsessions/gitsync:403:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/etc/passwd");
+etc/phpshellsessions/gitsync:404:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/etc/fstab");
+etc/phpshellsessions/gitsync:405:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/etc/ttys");
+etc/phpshellsessions/gitsync:406:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/etc/group");
+etc/phpshellsessions/gitsync:407:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/etc/fstab");
+etc/phpshellsessions/gitsync:408:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/etc/platform");
+etc/phpshellsessions/gitsync:409:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/boot/device.hints");
+etc/phpshellsessions/gitsync:410:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/boot/loader.conf");
+etc/phpshellsessions/gitsync:411:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/boot/loader.rc");
+etc/phpshellsessions/gitsync:412:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/etc/syslog.conf");
+etc/phpshellsessions/gitsync:413:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/root/.shrc");
+etc/phpshellsessions/gitsync:414:@unlink("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/root/.tcshrc");
+etc/phpshellsessions/gitsync:415:exec("/bin/rm -rf {$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/conf*");
+etc/phpshellsessions/gitsync:416:exec("/bin/rm -rf {$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/cf 2>/dev/null");
+etc/phpshellsessions/gitsync:417:@chmod("{$CODIR}/pfSenseGITREPO/pfSenseGITREPO/src/tmp", 01777);
+etc/phpshellsessions/gitsync:423:	$different_missing_files = shell_exec("/usr/bin/diff -qr / $CODIR/pfSenseGITREPO/pfSenseGITREPO/src/ | /usr/bin/grep -E '^(Files .*? and $CODIR/pfSenseGITREPO/pfSenseGITREPO/src/.*? differ)|(Only in $CODIR/pfSenseGITREPO/pfSenseGITREPO/src/)'");
+etc/phpshellsessions/gitsync:426:	preg_match_all('@(?:^Files .*? and '.$CODIR.'/pfSenseGITREPO/pfSenseGITREPO/src/(.+?) differ.*?$)@sim', $different_missing_files, $different_files_array, PREG_PATTERN_ORDER);
+etc/phpshellsessions/gitsync:427:	preg_match_all('@(?:^Only in '.$CODIR.'/pfSenseGITREPO/pfSenseGITREPO/src/(.+?)$)@sim', $different_missing_files, $missing_files_array, PREG_PATTERN_ORDER);
+etc/phpshellsessions/gitsync:444:					$res = is_dir("$CODIR/pfSenseGITREPO/pfSenseGITREPO/src/$tmp/");
+etc/phpshellsessions/gitsync:485:$command = "cd $CODIR/pfSenseGITREPO/pfSenseGITREPO ; /usr/bin/tar -cpf - {$tar_options} {$files_to_copy} | (cd / ; /usr/bin/tar -Uxpf -)";
+etc/phpshellsessions/gitsync:500:exec("cd $CODIR/pfSenseGITREPO/pfSenseGITREPO && {$GIT_BIN} reset --hard >/dev/null 2>/dev/null");
+etc/phpshellsessions/gitsync:503:$files_to_remove = file("/etc/pfSense.obsoletedfiles");
