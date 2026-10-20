@@ -15,7 +15,7 @@ sock_path = os.path.join(state, f"serial-{instance}.sock")
 log_path = os.path.join(state, f"serial-console-{instance}.log")
 
 timeout = 20.0
-prompt = r"(\$ |# |login: |Password:|Enter an option: )$"
+prompt = r"(\$ |# |login: |Password:|Enter an option: |\]/[^\n]*: )$"  # the product's root shell prompt ends in "]/root: "
 args = sys.argv[1:]
 while args and args[0] in ("-t", "-w"):
     if args[0] == "-t":
@@ -30,6 +30,7 @@ s.settimeout(0.5)
 
 def drain(until=None, limit=timeout):
     buf = b""
+    answered = 0
     end = time.time() + limit
     while time.time() < end:
         try:
@@ -37,6 +38,13 @@ def drain(until=None, limit=timeout):
             if not chunk:
                 break
             buf += chunk
+            # tcsh's resizewin asks for the cursor position before each prompt
+            # and swallows anything typed until it gets an answer; reply so the
+            # prompt appears at once (the query may arrive split over chunks)
+            n = buf.count(b"\x1b[6n")
+            if n > answered:
+                s.sendall(b"\x1b[24;80R" * (n - answered))
+                answered = n
             if until and re.search(until, buf.decode("utf-8", "replace").replace("\r", "")):
                 break
         except socket.timeout:
@@ -51,5 +59,5 @@ for i, cmd in enumerate(args):
 text = out.decode("utf-8", "replace").replace("\r", "")
 with open(log_path, "a") as f:
     f.write(text)
-# strip ANSI escapes for readability
-print(re.sub(r"\x1b\[[0-9;?]*[A-Za-z]", "", text))
+# strip ANSI escapes (CSI sequences, save/restore cursor) for readability
+print(re.sub(r"\x1b(\[[0-9;?]*[A-Za-z]|[78])", "", text))

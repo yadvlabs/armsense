@@ -7,6 +7,12 @@
 * `build/vm/clean-build.sh` for from-scratch builds; upstream commits pinned
   in `build/armsense.conf`.
 * SETUP.md (building from source) and a README "Get started" section.
+* Docs: running under libvirt/KVM on a Raspberry Pi 5 or other arm64 Linux
+  host (firmware without Secure Boot, `virt-install` example) and changing
+  the LAN address from the console.
+* `testvm/console.py` answers the shell's terminal-size query and recognises
+  the product's root shell prompt, so driving the console shell (menu
+  option 8) works.
 
 ## v0.1.0 (2026-10-20)
 

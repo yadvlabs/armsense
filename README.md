@@ -38,7 +38,7 @@ release may fail to boot, fail to upgrade, or misbehave.
 
 | Target | State |
 |---|---|
-| arm64 UEFI VM (QEMU/KVM) | Boots, console menu, web GUI, package updates from the armsense repository |
+| arm64 UEFI VM (QEMU/KVM) | Boots, console menu, web GUI, package updates from the armsense repository; tested under QEMU/HVF on a Mac and libvirt/KVM on a Raspberry Pi 5 |
 | Raspberry Pi 4 / CM4 | Planned (FreeBSD supports the board; needs the U-Boot/firmware boot partition) |
 | Raspberry Pi 5 | Later (no in-tree FreeBSD driver for the onboard Ethernet yet) |
 
@@ -53,9 +53,9 @@ disk (two virtio NICs: WAN on the first via DHCP, LAN on the second at
    [releases page](https://github.com/yadvlabs/armsense/releases) and check
    it against the `SHA256SUMS-images-*.txt` file.
 2. Create an arm64 UEFI virtual machine (QEMU/KVM, libvirt, Proxmox, UTM:
-   machine `virt`, edk2/AAVMF firmware, virtio disk, two virtio NICs; 2 vCPUs
-   and 2 GB RAM are plenty) and attach the disk image, or boot the ISO with an
-   empty disk and run the installer.
+   machine `virt`, edk2/AAVMF firmware with Secure Boot off, virtio disk, two
+   virtio NICs; 2 vCPUs and 2 GB RAM are plenty) and attach the disk image, or
+   boot the ISO with an empty disk and run the installer.
 3. The first NIC becomes WAN (DHCP), the second LAN at `192.168.1.1/24` with
    a DHCP server. Open `https://192.168.1.1/` from the LAN side and log in
    with `admin` / `armsense`; change the password first.
@@ -63,8 +63,9 @@ disk (two virtio NICs: WAN on the first via DHCP, LAN on the second at
    menu.
 
 On a Mac with QEMU installed, `testvm/run.sh disk <qcow2>` does step 2 with
-the GUI forwarded to https://127.0.0.1:8443. Details, defaults and a plain
-QEMU command line are in [docs/getting-started.md](docs/getting-started.md).
+the GUI forwarded to https://127.0.0.1:8443. Details, defaults, a plain QEMU
+command line and libvirt/KVM notes (including a Raspberry Pi 5 as the host)
+are in [docs/getting-started.md](docs/getting-started.md).
 
 ## Building from source
 
