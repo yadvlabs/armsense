@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+* `buildvm/setup-vm.sh` creates and bootstraps the build VM in one step;
+  VM and test-VM state moved to `~/.armsense` (outside the checkout).
+* `build/vm/clean-build.sh` for from-scratch builds; upstream commits pinned
+  in `build/armsense.conf`.
+* SETUP.md (building from source) and a README "Get started" section.
+
 ## v0.1.0 (2026-10-20)
 
 First development snapshot.

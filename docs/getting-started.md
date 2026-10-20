@@ -44,17 +44,17 @@ while it is still the default.
 
 ## Running under QEMU on a Mac or Linux host
 
-The repository ships a helper for QEMU: `testvm/run.sh`. It wires the first
+The repository ships a helper for QEMU: `testvm/run.sh` (its VM state goes to `~/.armsense/testvm`). It wires the first
 NIC to a user-mode network with DHCP (the "internet") and the second NIC to
 a user-mode network `192.168.1.0/24` with the GUI forwarded to the host:
 
-    testvm/run.sh disk armsense-2.9.0-DEVELOPMENT-arm64-20261020-0845.qcow2
+    testvm/run.sh disk ~/.armsense/buildvm/images/armsense-2.9.0-DEVELOPMENT-arm64-20261020-0845.qcow2
     # GUI: https://127.0.0.1:8443   SSH (once enabled): ssh -p 2223 admin@127.0.0.1
     # serial console on the terminal, Ctrl-A X quits
 
 To boot the installer instead:
 
-    testvm/run.sh iso armsense-2.9.0-DEVELOPMENT-arm64-20261020-0845.iso mydisk.qcow2
+    testvm/run.sh iso ~/.armsense/buildvm/images/armsense-2.9.0-DEVELOPMENT-arm64-20261020-0845.iso mydisk.qcow2
 
 Plain QEMU, for reference:
 

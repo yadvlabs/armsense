@@ -21,7 +21,7 @@ Pi 4 class boards next.
 * Project: https://labs.yadv.in/
 * Source: https://github.com/yadvlabs/armsense
 * License: [Apache License 2.0](LICENSE), see [NOTICE](NOTICE) for attribution
-* Docs: [getting started](docs/getting-started.md) (images, defaults, running under QEMU/KVM), [branding and attribution](docs/branding.md), [build pipeline](build/README.md)
+* Docs: [getting started](docs/getting-started.md) (images, defaults, running under QEMU/KVM), [building from source](SETUP.md), [branding and attribution](docs/branding.md), [releases](docs/release.md)
 
 > armsense is an independent project. It is not affiliated with, sponsored
 > by, or endorsed by Netgate or Electric Sheep Fencing. "pfSense" is a
@@ -45,6 +45,34 @@ release may fail to boot, fail to upgrade, or misbehave.
 Images are produced as a UEFI installer ISO and a ready-to-boot qcow2/raw
 disk (two virtio NICs: WAN on the first via DHCP, LAN on the second at
 192.168.1.1, serial console enabled, login admin / armsense).
+
+## Get started
+
+1. Download the latest `armsense-*.qcow2` (ready-to-boot disk) or
+   `armsense-*.iso` (installer) from the
+   [releases page](https://github.com/yadvlabs/armsense/releases) and check
+   it against the `SHA256SUMS-images-*.txt` file.
+2. Create an arm64 UEFI virtual machine (QEMU/KVM, libvirt, Proxmox, UTM:
+   machine `virt`, edk2/AAVMF firmware, virtio disk, two virtio NICs; 2 vCPUs
+   and 2 GB RAM are plenty) and attach the disk image, or boot the ISO with an
+   empty disk and run the installer.
+3. The first NIC becomes WAN (DHCP), the second LAN at `192.168.1.1/24` with
+   a DHCP server. Open `https://192.168.1.1/` from the LAN side and log in
+   with `admin` / `armsense`; change the password first.
+4. A serial console (115200 8N1) and the EFI console both show the console
+   menu.
+
+On a Mac with QEMU installed, `testvm/run.sh disk <qcow2>` does step 2 with
+the GUI forwarded to https://127.0.0.1:8443. Details, defaults and a plain
+QEMU command line are in [docs/getting-started.md](docs/getting-started.md).
+
+## Building from source
+
+The build runs on a FreeBSD 16.0-CURRENT arm64 host; on a Mac with Apple
+silicon `buildvm/setup-vm.sh` creates one as a QEMU/HVF VM and
+`build/vm/clean-build.sh` produces the images from the pinned upstream
+sources in about 1.5 hours. [SETUP.md](SETUP.md) describes the host, the
+overlay and the three build phases in detail.
 
 ## How it is built
 
@@ -86,7 +114,7 @@ lists what the build renames, what it keeps and why.
 ## Repository layout
 
     build/      overlay copied into the build VM: scripts, kernel config, ports stubs, branding
-    buildvm/    helpers to create and drive the FreeBSD arm64 build VM on a Mac (QEMU/HVF)
+    buildvm/    helpers to create and drive the FreeBSD arm64 build VM on a Mac (QEMU/HVF); state in ~/.armsense
     testvm/     helpers to boot and drive the produced images under QEMU
     branding/   logo generator and audit notes
     docs/       user and release documentation

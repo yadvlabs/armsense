@@ -35,6 +35,7 @@ build VM (see `../buildvm/`).  These scripts are copied into the VM as
 | 3 | `vm/phase3-image.sh final` | final chroot = stage + core packages + port packages. |
 | 3 | `vm/phase3-image.sh iso` | UEFI installer ISO (hybrid ISO with ESP). |
 | 3 | `vm/phase3-image.sh disk` | GPT disk image (ESP + swap + UFS root) as raw and qcow2, WAN=vtnet0, LAN=vtnet1, serial console. |
+| all | `vm/clean-build.sh` | Re-cuts the branches, wipes all build output and runs phases 1 to 3 (`--keep-ccache` keeps the compiler cache). |
 
 Package naming follows the pfSense builder: jail `<product>_<pfsense branch>_<arch>`,
 ports tree `<product>_<ports branch>`, so the repository URLs baked into the
@@ -44,9 +45,9 @@ Mac with `../buildvm/sync-packages.sh` then `../buildvm/serve-packages.sh`.
 
 ## Testing images
 
-    ../buildvm/sync-packages.sh                      # pulls images to ../buildvm/images
-    ../testvm/run.sh disk ../buildvm/images/armsense-*.qcow2
-    ../testvm/run.sh iso  ../buildvm/images/armsense-*.iso
+    ../buildvm/sync-packages.sh                      # pulls images to ~/.armsense/buildvm/images
+    ../testvm/run.sh disk ~/.armsense/buildvm/images/armsense-*.qcow2
+    ../testvm/run.sh iso  ~/.armsense/buildvm/images/armsense-*.iso
 
 GUI: https://127.0.0.1:8443 (LAN side), serial console on the terminal.
 
