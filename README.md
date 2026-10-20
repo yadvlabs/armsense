@@ -10,12 +10,19 @@ Pi 4 class boards next.
 * Project: https://labs.yadv.in/
 * Source: https://github.com/yadvlabs/armsense
 * License: [Apache License 2.0](LICENSE), see [NOTICE](NOTICE) for attribution
+* Docs: [getting started](docs/getting-started.md) (images, defaults, running under QEMU/KVM), [branding and attribution](docs/branding.md), [build pipeline](build/README.md)
 
 > armsense is an independent project. It is not affiliated with, sponsored
 > by, or endorsed by Netgate or Electric Sheep Fencing. "pfSense" is a
 > registered trademark of Electric Sheep Fencing, LLC.
 
 ## Status
+
+armsense is a **development snapshot** (`v0.x`). It is meant for trying out
+in a virtual machine. Do not put it in front of anything you care about yet:
+the package repositories are unsigned and served from a development host,
+and the project has had no security review.
+
 
 | Target | State |
 |---|---|
@@ -25,7 +32,7 @@ Pi 4 class boards next.
 
 Images are produced as a UEFI installer ISO and a ready-to-boot qcow2/raw
 disk (two virtio NICs: WAN on the first via DHCP, LAN on the second at
-192.168.1.1, serial console enabled, admin / pfsense).
+192.168.1.1, serial console enabled, login admin / armsense).
 
 ## How it is built
 
@@ -48,10 +55,27 @@ closed in-kernel driver is not available), the dynamic repository client and
 the unique-ID tool are small stand-ins, Kea is stock, and the package
 repositories are currently unsigned.
 
+## Releases and CI
+
+Tags matching `v*` trigger the Release workflow, which validates the tree,
+packages the build overlay and opens a GitHub release; images are built on
+the FreeBSD build VM and attached afterwards. See [docs/release.md](docs/release.md)
+and [CHANGELOG.md](CHANGELOG.md).
+
+## Trademarks and attribution
+
+armsense is derived from pfSense® CE software under the Apache License 2.0
+and carries the required attribution in [NOTICE](NOTICE), the GUI license
+dialog and the installer. "pfSense" is a registered trademark of Electric
+Sheep Fencing, LLC; "Netgate" is a trademark of Rubicon Communications, LLC.
+Neither is affiliated with armsense. [docs/branding.md](docs/branding.md)
+lists what the build renames, what it keeps and why.
+
 ## Repository layout
 
     build/      overlay copied into the build VM: scripts, kernel config, ports stubs, branding
     buildvm/    helpers to create and drive the FreeBSD arm64 build VM on a Mac (QEMU/HVF)
     testvm/     helpers to boot and drive the produced images under QEMU
     branding/   logo generator and audit notes
+    docs/       user and release documentation
     extras/     (ignored) clones of the upstream repositories used for investigation

@@ -28,7 +28,9 @@ testvm/*.sock
 testvm/*.html
 testvm/cj.txt
 
-# Third-party reference material (not ours to redistribute).
+# Logo generator output (canonical copies live in build/branding/) and third-party reference material.
+branding/out/
+branding/tmp/
 branding/ref/
 
 .DS_Store
