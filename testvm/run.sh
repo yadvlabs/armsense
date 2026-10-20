@@ -7,6 +7,7 @@
 # Network: vtnet0 (WAN) = QEMU user network 10.0.2.0/24 with DHCP,
 #          vtnet1 (LAN) = QEMU user network 192.168.1.0/24, guest LAN IP 192.168.1.1
 #          host forwards: https://127.0.0.1:8443 -> LAN GUI, ssh -p 2223 127.0.0.1 -> LAN ssh
+#          (LAN_IP=192.168.1.200 for the lan-dhcp image: QEMU's leases start there)
 # Console: serial on stdio (Ctrl-A X to quit QEMU).
 set -eu
 T=$(cd "$(dirname "$0")" && pwd)
@@ -20,6 +21,7 @@ INSTANCE=${INSTANCE:-test}
 GUI_PORT=${GUI_PORT:-8443}
 HTTP_PORT=${HTTP_PORT:-8080}
 SSH_FWD_PORT=${SSH_FWD_PORT:-2223}
+LAN_IP=${LAN_IP:-192.168.1.1}
 CODE=/opt/homebrew/share/qemu/edk2-aarch64-code.fd
 VARS=$S/efivars-$INSTANCE.fd
 [ -f "$VARS" ] || cp /opt/homebrew/share/qemu/edk2-arm-vars.fd "$VARS"
@@ -63,7 +65,7 @@ exec qemu-system-aarch64 \
 	-device virtio-blk-pci,drive=hd0,bootindex=1 \
 	$BOOT \
 	-netdev user,id=wan -device virtio-net-pci,netdev=wan,mac=52:54:00:aa:00:01 \
-	-netdev user,id=lan,net=192.168.1.0/24,host=192.168.1.2,dhcpstart=192.168.1.200,hostfwd=tcp:127.0.0.1:${GUI_PORT}-192.168.1.1:443,hostfwd=tcp:127.0.0.1:${HTTP_PORT}-192.168.1.1:80,hostfwd=tcp:127.0.0.1:${SSH_FWD_PORT}-192.168.1.1:22 \
+	-netdev user,id=lan,net=192.168.1.0/24,host=192.168.1.2,dhcpstart=192.168.1.200,hostfwd=tcp:127.0.0.1:${GUI_PORT}-${LAN_IP}:443,hostfwd=tcp:127.0.0.1:${HTTP_PORT}-${LAN_IP}:80,hostfwd=tcp:127.0.0.1:${SSH_FWD_PORT}-${LAN_IP}:22 \
 	-device virtio-net-pci,netdev=lan,mac=52:54:00:aa:00:02 \
 	-device virtio-rng-pci \
 	-display none -vga none \

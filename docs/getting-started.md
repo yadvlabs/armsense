@@ -14,14 +14,19 @@
 
 ## Images
 
-Each build produces three files, named
-`armsense-<version>-arm64-<date>.*`:
+Each build produces these files, named `armsense-<version>-arm64-<date>.*`:
 
 | File | Use |
 |---|---|
-| `.qcow2` | Ready-to-boot disk for QEMU/KVM, libvirt, Proxmox, UTM. UEFI (edk2/AAVMF) required. |
-| `.raw` | The same disk as a raw image, for other hypervisors or for writing to a drive. |
+| `.qcow2` | Ready-to-boot disk for QEMU/KVM, libvirt, Proxmox, UTM. UEFI (edk2/AAVMF) required. LAN fixed at `192.168.1.1/24` with a DHCP server. |
+| `-lan-dhcp.qcow2` | The same disk, but the LAN interface is a DHCP client as well. For hypervisors whose second network has its own DHCP server (Apple Virtualization: MacVisor, UTM; VMware or Parallels shared networks). The GUI is at the address the console menu shows for LAN. |
+| `.raw`, `-lan-dhcp.raw` | The same disks as raw images, for hypervisors that need raw (Apple Virtualization) or for writing to a drive. |
 | `.iso` | UEFI installer (hybrid ISO, boots from a CD/DVD device or a USB stick). |
+
+The two disk flavours differ only in the default configuration: on the
+lan-dhcp image the LAN DHCP server is off and WAN is pinned as the default
+gateway. Either setting can be changed later from the console menu (option
+2) or in the GUI.
 
 The disk image is 8 GB (6 GB root file system, 1 GB swap, EFI system
 partition). On first boot the root file system grows to fill the partition,
@@ -35,8 +40,8 @@ so you can enlarge the disk before the first boot (`qemu-img resize`).
 | Console / SSH root password | `armsense` (same account as admin) |
 | Hostname | `armsense.home.arpa` |
 | WAN | first virtio NIC (`vtnet0`), DHCP client |
-| LAN | second virtio NIC (`vtnet1`), `192.168.1.1/24`, DHCP server `192.168.1.100-199` |
-| Web GUI | `https://192.168.1.1/` on the LAN side (self-signed certificate) |
+| LAN | second virtio NIC (`vtnet1`), `192.168.1.1/24`, DHCP server `192.168.1.100-199` (lan-dhcp image: DHCP client, no DHCP server) |
+| Web GUI | `https://192.168.1.1/` on the LAN side (self-signed certificate); lan-dhcp image: `https://<LAN address from the console menu>/` |
 | Consoles | serial (115200 8N1) and EFI framebuffer, both active |
 
 Change the admin password at the first login; the dashboard reminds you
@@ -65,6 +70,24 @@ Plain QEMU, for reference:
       -netdev user,id=lan,net=192.168.1.0/24,hostfwd=tcp::8443-192.168.1.1:443 \
       -device virtio-net-pci,netdev=lan \
       -nographic
+
+## Running under Apple Virtualization (MacVisor, UTM)
+
+Hypervisors built on Apple's Virtualization framework boot the image with
+their EFI boot loader and present virtio devices, which is what the image
+expects. Attach the disk (raw if the app needs it: `qemu-img convert -O raw`)
+and two network devices; the first becomes WAN, the second LAN.
+
+The second network is usually a shared (NAT) or bridged network with its own
+DHCP server and subnet, so a LAN fixed at `192.168.1.1/24` is unreachable
+from it. Use the `-lan-dhcp` image: the LAN takes an address from that
+network, and the console menu shows it as `LAN (lan) -> vtnet1 -> v4/DHCP4:
+<address>`. The GUI is at `https://<address>/`. On the standard image the
+same result is one console step away: menu option 2, LAN, answer `y` to
+"Configure IPv4 address LAN interface via DHCP" and `n` to the DHCP server.
+
+A NoCloud seed (cloud-init `cidata` volume) attached by the hypervisor is
+ignored by the appliance.
 
 ## Running under libvirt/KVM (Raspberry Pi 5 or any arm64 Linux host)
 

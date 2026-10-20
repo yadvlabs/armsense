@@ -60,7 +60,10 @@ disk (two virtio NICs: WAN on the first via DHCP, LAN on the second at
    one step with the right firmware ([deploy/libvirt/README.md](deploy/libvirt/README.md)).
 3. The first NIC becomes WAN (DHCP), the second LAN at `192.168.1.1/24` with
    a DHCP server. Open `https://192.168.1.1/` from the LAN side and log in
-   with `admin` / `armsense`; change the password first.
+   with `admin` / `armsense`; change the password first. If the LAN NIC sits
+   on a network that already has a DHCP server (Apple Virtualization apps
+   such as MacVisor or UTM, shared networks), use the `-lan-dhcp` image: its
+   LAN is a DHCP client and the console menu shows the address to open.
 4. A serial console (115200 8N1) and the EFI console both show the console
    menu.
 

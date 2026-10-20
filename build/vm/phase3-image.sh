@@ -7,8 +7,9 @@
 #   sh phase3-image.sh final   final chroot: stage world + core packages +
 #                              port packages from poudriere
 #   sh phase3-image.sh iso     installer ISO (hybrid ISO with EFI system partition)
-#   sh phase3-image.sh disk    bootable disk image (GPT: ESP + swap + UFS root),
-#                              raw and qcow2, for QEMU/KVM
+#   sh phase3-image.sh disk    bootable disk images (GPT: ESP + swap + UFS root),
+#                              raw and qcow2, in the flavours listed in
+#                              DISK_FLAVOURS (default: "default lan-dhcp")
 #   sh phase3-image.sh all     everything above in order
 #
 # Mirrors build.sh / tools/builder_common.sh (make_world, build_all_kernels,
@@ -259,6 +260,28 @@ make_esp() {
 	rm -rf "${stage:?}"
 }
 
+# Default configurations of the disk-image flavours (DISK_FLAVOURS):
+#   default   LAN static 192.168.1.1/24 with a DHCP server (upstream default)
+#   lan-dhcp  LAN is a DHCP client too, for hypervisors whose second network
+#             brings its own DHCP server (Apple Virtualization: MacVisor, UTM;
+#             VMware/Parallels shared networks).  The GUI is then at the leased
+#             address shown in the console menu; the LAN DHCP server is off and
+#             WAN_DHCP is pinned as the default gateway.
+flavour_config() {	# $1 flavour, $2 config.xml (interfaces already set to vtnet0/vtnet1)
+	case $1 in
+	default) ;;
+	lan-dhcp)
+		xml ed -L -P -u '/pfsense/interfaces/lan/ipaddr' -v dhcp \
+		    -d '/pfsense/interfaces/lan/subnet' \
+		    -s '/pfsense/interfaces/lan' -t elem -n dhcphostname -v "$N" \
+		    -d '/pfsense/dhcpd/lan/enable' \
+		    -s '/pfsense' -t elem -n gateways \
+		    -s '/pfsense/gateways' -t elem -n defaultgw4 -v WAN_DHCP "$2"
+		;;
+	*) log "unknown disk flavour '$1'"; exit 1 ;;
+	esac
+}
+
 disk() {
 	check_prereqs
 	[ -x "$FINAL/bin/sh" ] || { log "no final chroot; run 'final' first"; exit 1; }
@@ -273,31 +296,44 @@ disk() {
 /dev/gpt/efiboot0	/boot/efi	msdosfs	rw	2	2
 /dev/gpt/swap0		none		swap	sw	0	0
 EOC
-	# QEMU/KVM virtio NICs: WAN = first, LAN = second.
-	for c in "$DISKROOT/conf.default/config.xml" "$DISKROOT/cf/conf/config.xml"; do
-		[ -f "$c" ] || continue
-		xml ed -L -P -u '/pfsense/interfaces/wan/if' -v vtnet0 -u '/pfsense/interfaces/lan/if' -v vtnet1 "$c"
+	# QEMU/KVM virtio NICs: WAN = first, LAN = second.  Keep pristine copies of
+	# the configuration files outside the tree; every flavour starts from them.
+	configs="conf.default/config.xml cf/conf/config.xml"
+	for c in $configs; do
+		[ -f "$DISKROOT/$c" ] || continue
+		xml ed -L -P -u '/pfsense/interfaces/wan/if' -v vtnet0 -u '/pfsense/interfaces/lan/if' -v vtnet1 "$DISKROOT/$c"
+		cp "$DISKROOT/$c" "$A/pristine-$(echo "$c" | tr / _)"
 	done
 	# Grow the root file system to the partition on first boot.
 	touch "$DISKROOT/root/force_growfs"
 
-	log "file systems"
-	rm -f "$A/root.ufs" "$A/esp.img"
-	makefs -t ffs -B little -o label="$N",version=2,softupdates=1 -s "${DISK_ROOT_SIZE:-6g}" "$A/root.ufs" "$DISKROOT"
-	make_esp "$A/esp.img" 33292 "$DISKROOT/boot/loader.efi"
-
 	mkdir -p "$IMAGES"
-	rm -f "$IMAGES/$IMGBASE.raw" "$IMAGES/$IMGBASE.qcow2"
-	log "disk image: $IMAGES/$IMGBASE.raw"
-	mkimg -s gpt -f raw \
-	    -p efi/efiboot0:="$A/esp.img" \
-	    -p freebsd-swap/swap0::1g \
-	    -p freebsd-ufs/"$N":="$A/root.ufs" \
-	    -o "$IMAGES/$IMGBASE.raw"
-	qemu-img convert -f raw -O qcow2 -c "$IMAGES/$IMGBASE.raw" "$IMAGES/$IMGBASE.qcow2"
-	rm -f "$A/root.ufs" "$A/esp.img"
+	rm -f "$A/esp.img"
+	make_esp "$A/esp.img" 33292 "$DISKROOT/boot/loader.efi"
+	for fl in ${DISK_FLAVOURS:-default lan-dhcp}; do
+		base=$IMGBASE; [ "$fl" = default ] || base=$IMGBASE-$fl
+		for c in $configs; do
+			pristine="$A/pristine-$(echo "$c" | tr / _)"
+			[ -f "$pristine" ] || continue
+			cp "$pristine" "$DISKROOT/$c"
+			flavour_config "$fl" "$DISKROOT/$c"
+		done
+		log "root file system ($fl)"
+		rm -f "$A/root.ufs"
+		makefs -t ffs -B little -o label="$N",version=2,softupdates=1 -s "${DISK_ROOT_SIZE:-6g}" "$A/root.ufs" "$DISKROOT"
+		rm -f "$IMAGES/$base.raw" "$IMAGES/$base.qcow2"
+		log "disk image: $IMAGES/$base.raw"
+		mkimg -s gpt -f raw \
+		    -p efi/efiboot0:="$A/esp.img" \
+		    -p freebsd-swap/swap0::1g \
+		    -p freebsd-ufs/"$N":="$A/root.ufs" \
+		    -o "$IMAGES/$base.raw"
+		qemu-img convert -f raw -O qcow2 -c "$IMAGES/$base.raw" "$IMAGES/$base.qcow2"
+		rm -f "$A/root.ufs"
+	done
+	rm -f "$A/esp.img" "$A"/pristine-*
 	ls -la "$IMAGES"
-	log "disk image done"
+	log "disk images done"
 }
 
 case "${1:-all}" in

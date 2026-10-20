@@ -7,6 +7,11 @@
 * `build/vm/clean-build.sh` for from-scratch builds; upstream commits pinned
   in `build/armsense.conf`.
 * SETUP.md (building from source) and a README "Get started" section.
+* Second disk-image flavour `-lan-dhcp` (LAN as a DHCP client, no LAN DHCP
+  server, WAN pinned as default gateway) for Apple Virtualization apps
+  (MacVisor, UTM) and other hypervisors whose second network has its own
+  DHCP server; `DISK_FLAVOURS` selects the flavours `phase3-image.sh disk`
+  builds. `testvm/run.sh` takes `LAN_IP` for the port forwards.
 * `deploy/libvirt/`: `create-vm.sh` and a domain template that create and
   start the VM on a libvirt/KVM host (Raspberry Pi 5 tested), attached to
   releases as `armsense-libvirt-<tag>.tar.gz`; the docs explain why Secure
