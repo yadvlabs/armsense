@@ -1,0 +1,3 @@
+Stand-in for the upstream closed-source repository client.  Copies the
+static repository definitions shipped by the -repo package into place instead
+of fetching them from the vendor.

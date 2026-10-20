@@ -1,0 +1,2 @@
+Stand-in for the upstream closed-source unique-ID tool.  Prints a stable, opaque identifier
+for this system derived from the kernel host UUID.

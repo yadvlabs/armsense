@@ -1,0 +1,25 @@
+#
+# armsense arm64 kernel configuration.
+#
+# Reuses the pfSense arm64 kernel configuration from the pfSense FreeBSD-src
+# fork (sys/arm64/conf/pfSense, which itself includes GENERIC) and only changes
+# the kernel ident.  Installed by build/vm/phase1-base.sh as
+# sys/arm64/conf/armsense.
+#
+include		pfSense
+
+ident		armsense
+
+# The public pfSense arm64 config still lists drivers and options that were
+# removed from FreeBSD (hifn/ubsec/an crypto and wireless drivers, the ath PCI
+# glue, old ath/net80211 options).  config(8) rejects unknown entries, so
+# drop them here.
+nodevice	an
+nodevice	ath_pci
+nodevice	hifn
+nodevice	ubsec
+nooptions	AH_SUPPORT_AR5416
+nooptions	ATH_ENABLE_11N
+nooptions	HIFN_DEBUG
+nooptions	HIFN_RNDTEST
+nooptions	IEEE80211_AMPDU_AGE

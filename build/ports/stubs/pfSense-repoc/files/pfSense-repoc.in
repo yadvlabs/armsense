@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# %%PRODUCT_NAME%%-repoc -- stand-in for the upstream closed-source repository client.
+#
+# The original contacts the vendor's servers and writes the repository settings
+# (<product>-repo-<id>.conf/.name/.descr/.abi/.altabi/.osversion/.release)
+# into $g['pkg_repos_path'].  Here the repository definitions are static and
+# shipped by the %%PRODUCT_NAME%%-repo package, so this script only copies
+# them into place.
+#
+# Flags used by %%PRODUCT_NAME%%-upgrade, %%PRODUCT_NAME%%-repo-setup and
+# pkg-utils.inc:
+#   -f   print the supported feature list, one per line
+#   -N   new-style repository directory layout (accepted; always the case)
+#
+PRODUCT="%%PRODUCT_NAME%%"
+SRC="/usr/local/share/${PRODUCT}/pkg/repos"
+DST="/usr/local/etc/${PRODUCT}/pkg/repos"
+
+case "${1:-}" in
+-f)
+	printf '%s\n' osversion repodir-new-fstyle is-release
+	exit 0
+	;;
+-h|--help)
+	echo "usage: ${0##*/} [-f] [-N]"
+	exit 0
+	;;
+esac
+
+if [ ! -d "${SRC}" ]; then
+	echo "Messages:"
+	echo "No repository definitions found in ${SRC}"
+	exit 1
+fi
+
+mkdir -p "${DST}"
+osversion="$(/usr/bin/uname -U 2>/dev/null)"
+default=""
+for conf in "${SRC}"/${PRODUCT}-repo*.conf; do
+	[ -f "${conf}" ] || continue
+	base="${conf%.conf}"
+	name="${base##*/}"
+	id="${name#${PRODUCT}-repo}"
+	id="${id#-}"
+	[ -n "${id}" ] || id="stable"
+	for ext in conf abi altabi descr osversion; do
+		[ -f "${base}.${ext}" ] && cp -f "${base}.${ext}" "${DST}/${PRODUCT}-repo-${id}.${ext}"
+	done
+	echo "${id}" > "${DST}/${PRODUCT}-repo-${id}.name"
+	# Fall back to the running kernel's version when the -repo package predates .osversion files.
+	[ -f "${base}.osversion" ] || [ -z "${osversion}" ] || echo "${osversion}" > "${DST}/${PRODUCT}-repo-${id}.osversion"
+	# Every repository counts as a release repository for update checks.
+	: > "${DST}/${PRODUCT}-repo-${id}.release"
+	[ -f "${conf}.default" ] && default="${id}"
+done
+
+rm -f "${DST}"/*.default
+[ -n "${default}" ] && : > "${DST}/${PRODUCT}-repo-${default}.default"
+
+exit 0

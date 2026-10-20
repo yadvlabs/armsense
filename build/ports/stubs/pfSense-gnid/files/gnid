@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+# gnid -- stand-in for the upstream closed-source unique-ID tool.
+# Prints a stable, opaque 32-character identifier derived from the kernel
+# host UUID (falls back to hostname + hostid when the UUID is not populated).
+#
+uuid="$(/sbin/sysctl -n kern.hostuuid 2>/dev/null)"
+case "${uuid}" in
+""|00000000-0000-0000-0000-000000000000)
+	uuid="$(/bin/hostname)-$(/sbin/sysctl -n kern.hostid 2>/dev/null)"
+	;;
+esac
+printf 'armsense:%s' "${uuid}" | /sbin/sha256 -q | /usr/bin/cut -c1-32
