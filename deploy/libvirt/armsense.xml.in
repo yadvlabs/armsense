@@ -1,0 +1,68 @@
+<!--
+  armsense libvirt domain template.  create-vm.sh renders it; to use it by
+  hand replace the @PLACEHOLDERS@ and run `virsh define armsense.xml`.
+
+  The <firmware> block is the part that matters: UEFI *without* Secure Boot.
+  The FreeBSD loader in the image is not signed with Microsoft's keys, so the
+  default Secure Boot firmware refuses to run it ("Access Denied", "No
+  bootable option or device was found").  Everything else is a plain virtio
+  machine.  The first <interface> becomes WAN, the second LAN.
+-->
+<domain type='kvm'>
+  <name>@NAME@</name>
+  <memory unit='MiB'>@MEMORY_MB@</memory>
+  <vcpu placement='static'>@VCPUS@</vcpu>
+  <os firmware='efi'>
+    <type arch='aarch64' machine='virt'>hvm</type>
+    <firmware>
+      <feature enabled='no' name='secure-boot'/>
+      <feature enabled='no' name='enrolled-keys'/>
+    </firmware>
+    <boot dev='hd'/>
+  </os>
+  <features>
+    <acpi/>
+  </features>
+  <cpu mode='host-passthrough' check='none'/>
+  <clock offset='utc'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2' discard='unmap'/>
+      <source file='@DISK@'/>
+      <target dev='vda' bus='virtio'/>
+    </disk>
+    <!-- first NIC: WAN (DHCP client) -->
+    <interface type='@WAN_TYPE@'>
+      <source @WAN_SOURCE@/>
+      <model type='virtio'/>
+    </interface>
+    <!-- second NIC: LAN (192.168.1.1/24 with DHCP server by default) -->
+    <interface type='@LAN_TYPE@'>
+      <source @LAN_SOURCE@/>
+      <model type='virtio'/>
+    </interface>
+    <serial type='pty'>
+      <target type='system-serial' port='0'>
+        <model name='pl011'/>
+      </target>
+    </serial>
+    <console type='pty'>
+      <target type='serial' port='0'/>
+    </console>
+    <channel type='unix'>
+      <target type='virtio' name='org.qemu.guest_agent.0'/>
+    </channel>
+    <!-- optional display; the EFI framebuffer shows the same console menu -->
+    <graphics type='vnc' port='-1' autoport='yes' listen='127.0.0.1'/>
+    <video>
+      <model type='virtio' heads='1'/>
+    </video>
+    <rng model='virtio'>
+      <backend model='random'>/dev/urandom</backend>
+    </rng>
+    <memballoon model='virtio'/>
+  </devices>
+</domain>

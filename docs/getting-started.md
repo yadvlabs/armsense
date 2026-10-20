@@ -68,15 +68,26 @@ Plain QEMU, for reference:
 
 ## Running under libvirt/KVM (Raspberry Pi 5 or any arm64 Linux host)
 
-Tested on a Raspberry Pi 5 running Ubuntu 26.04 with libvirt 12 and QEMU 10;
-the same points apply to Proxmox and other QEMU-based hypervisors.
+`deploy/libvirt/create-vm.sh` creates and starts the VM from the qcow2 in one
+step (tested on a Raspberry Pi 5 with Ubuntu 26.04, libvirt 12 and QEMU 10):
 
-* **Firmware: UEFI with Secure Boot off.** Distributions pick the Secure
-  Boot build of the arm64 firmware (`AAVMF_CODE.ms.fd`) by default. It
-  refuses the FreeBSD loader, which is not signed with Microsoft's keys: the
-  console shows `UEFI Misc Device ... Access Denied` and then `No bootable
-  option or device was found`. Ask libvirt for the firmware without Secure
-  Boot:
+    sudo sh deploy/libvirt/create-vm.sh -i armsense-<version>-arm64-<date>.qcow2 -w br0 -l br1 -s 16G
+    sudo virsh console armsense
+
+`-w` and `-l` take a host bridge name or `network=NAME` for a libvirt
+network. Requirements, the domain template it renders, a `virt-install`
+equivalent and removal are in
+[deploy/libvirt/README.md](../deploy/libvirt/README.md).
+
+The settings that matter on any libvirt or Proxmox host:
+
+* **UEFI firmware without Secure Boot.** With the default Secure Boot
+  firmware the console shows `UEFI Misc Device ... Access Denied` and then
+  `No bootable option or device was found`. This is a property of the
+  firmware, not something the image can work around: Secure Boot runs only
+  EFI binaries signed by a key the firmware trusts, the FreeBSD loader has no
+  Microsoft signature and FreeBSD has no Microsoft-signed shim. Upstream
+  pfSense needs Secure Boot off for the same reason. In libvirt XML:
 
       <os firmware='efi'>
         <type arch='aarch64' machine='virt'>hvm</type>
@@ -86,30 +97,13 @@ the same points apply to Proxmox and other QEMU-based hypervisors.
         </firmware>
       </os>
 
-  libvirt then selects `AAVMF_CODE.no-secboot.fd` (or the plain
-  `AAVMF_CODE.fd`). For a VM that was already created with the Secure Boot
-  firmware, edit the XML and recreate the NVRAM file:
-  `virsh undefine --nvram <name>` followed by `virsh define <name>.xml`.
-* **Disk:** the qcow2 image as a virtio disk (`bus='virtio'`). The first
-  boot grows the root file system to the size of the disk.
-* **Network:** two virtio NICs. The first in PCI order becomes WAN, the
-  second LAN. With each NIC on its own bridge (for example the home network
-  for WAN and a second bridge for LAN) the two sides get separate subnets; if
-  the LAN bridge already carries a `192.168.1.0/24` network, change the LAN
-  address as described below.
-* **CPU and memory:** `host-passthrough`, 2 vCPUs, 2 to 4 GB of RAM.
-* **Console:** a pty serial console (`virsh console <name>`) shows the console
-  menu. A VNC or SPICE display is optional; the EFI framebuffer shows the
-  same menu.
-
-The same as one `virt-install` command (version 4 or newer):
-
-    virt-install --name armsense --arch aarch64 --machine virt --cpu host-passthrough \
-      --vcpus 2 --memory 4096 --osinfo freebsd14.0 \
-      --boot uefi,firmware.feature0.name=secure-boot,firmware.feature0.enabled=no,firmware.feature1.name=enrolled-keys,firmware.feature1.enabled=no \
-      --disk /var/lib/libvirt/images/armsense.qcow2,bus=virtio \
-      --network bridge=br-wan,model=virtio --network bridge=br-lan,model=virtio \
-      --graphics none --import
+  For a VM already created with the Secure Boot firmware, add the block with
+  `virsh edit`, then `virsh undefine --nvram <name>` and `virsh define` so
+  the NVRAM file is recreated.
+* virtio disk; two virtio NICs, the first in PCI order is WAN and the second
+  LAN; `host-passthrough` CPU, 2 vCPUs, 2 to 4 GB of RAM; a pty serial
+  console (`virsh console <name>`). A display is optional, the EFI
+  framebuffer shows the same menu.
 
 ### Changing the LAN address from the console
 

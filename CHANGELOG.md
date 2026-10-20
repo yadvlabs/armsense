@@ -7,6 +7,10 @@
 * `build/vm/clean-build.sh` for from-scratch builds; upstream commits pinned
   in `build/armsense.conf`.
 * SETUP.md (building from source) and a README "Get started" section.
+* `deploy/libvirt/`: `create-vm.sh` and a domain template that create and
+  start the VM on a libvirt/KVM host (Raspberry Pi 5 tested), attached to
+  releases as `armsense-libvirt-<tag>.tar.gz`; the docs explain why Secure
+  Boot has to be off and that the image cannot work around it.
 * Docs: running under libvirt/KVM on a Raspberry Pi 5 or other arm64 Linux
   host (firmware without Secure Boot, `virt-install` example) and changing
   the LAN address from the console.

@@ -55,7 +55,9 @@ disk (two virtio NICs: WAN on the first via DHCP, LAN on the second at
 2. Create an arm64 UEFI virtual machine (QEMU/KVM, libvirt, Proxmox, UTM:
    machine `virt`, edk2/AAVMF firmware with Secure Boot off, virtio disk, two
    virtio NICs; 2 vCPUs and 2 GB RAM are plenty) and attach the disk image, or
-   boot the ISO with an empty disk and run the installer.
+   boot the ISO with an empty disk and run the installer. On a libvirt/KVM
+   host such as a Raspberry Pi 5, `deploy/libvirt/create-vm.sh` does this in
+   one step with the right firmware ([deploy/libvirt/README.md](deploy/libvirt/README.md)).
 3. The first NIC becomes WAN (DHCP), the second LAN at `192.168.1.1/24` with
    a DHCP server. Open `https://192.168.1.1/` from the LAN side and log in
    with `admin` / `armsense`; change the password first.
@@ -117,6 +119,7 @@ lists what the build renames, what it keeps and why.
     build/      overlay copied into the build VM: scripts, kernel config, ports stubs, branding
     buildvm/    helpers to create and drive the FreeBSD arm64 build VM on a Mac (QEMU/HVF); state in ~/.armsense
     testvm/     helpers to boot and drive the produced images under QEMU
+    deploy/     recipes to run the images on hypervisors (libvirt/KVM: script and domain template)
     branding/   logo generator and audit notes
     docs/       user and release documentation
     extras/     (ignored) clones of the upstream repositories used for investigation

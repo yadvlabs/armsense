@@ -19,8 +19,9 @@ armsense has two kinds of version:
        git push origin main v0.1.0
 
 4. The **Release** workflow validates the tree, packages the build overlay
-   (`armsense-build-overlay-<tag>.tar.gz`) and the logo files, and creates
-   the GitHub release. Tags that start with `v0.` or contain a `-` are marked
+   (`armsense-build-overlay-<tag>.tar.gz`), the libvirt recipe
+   (`armsense-libvirt-<tag>.tar.gz`, from `deploy/libvirt/`) and the logo
+   files, and creates the GitHub release. Tags that start with `v0.` or contain a `-` are marked
    as pre-releases.
 5. Build the images on the FreeBSD arm64 build VM (`SETUP.md`; for a release
    use `build/vm/clean-build.sh`), then attach them:

@@ -3,7 +3,7 @@ name: Release
 # Triggered by version tags (v0.1.0, v1.2.3-rc1, ...).  GitHub-hosted runners
 # cannot build the images (that needs a FreeBSD arm64 host, see
 # docs/release.md), so this workflow validates the repository, packages the
-# build overlay and branding assets, and opens the GitHub release.  Images
+# build overlay, the libvirt recipe and branding assets, and opens the GitHub release.  Images
 # produced on the build VM are attached afterwards with buildvm/publish-release.sh.
 
 on:
@@ -50,6 +50,7 @@ jobs:
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           mkdir -p dist
           tar -czf "dist/armsense-build-overlay-${tag}.tar.gz" build
+          tar -czf "dist/armsense-libvirt-${tag}.tar.gz" -C deploy libvirt
           cp build/branding/armsense-logo.svg build/branding/armsense-mark.svg dist/
           (cd dist && sha256sum * > "SHA256SUMS-${tag}.txt")
           ls -la dist
@@ -66,7 +67,7 @@ jobs:
             {
               echo "armsense ${tag}"
               echo
-              echo "Build overlay and branding assets for this tag. Disk and installer images are built"
+              echo "Build overlay, libvirt recipe and branding assets for this tag. Disk and installer images are built"
               echo "on a FreeBSD arm64 build VM and attached separately; see docs/release.md."
             } > dist/NOTES.md
           fi
@@ -78,6 +79,7 @@ jobs:
           prerelease: ${{ contains(steps.pkg.outputs.tag, '-') || startsWith(steps.pkg.outputs.tag, 'v0.') }}
           files: |
             dist/armsense-build-overlay-${{ steps.pkg.outputs.tag }}.tar.gz
+            dist/armsense-libvirt-${{ steps.pkg.outputs.tag }}.tar.gz
             dist/armsense-logo.svg
             dist/armsense-mark.svg
             dist/SHA256SUMS-${{ steps.pkg.outputs.tag }}.txt

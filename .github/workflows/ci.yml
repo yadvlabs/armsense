@@ -22,6 +22,12 @@ jobs:
             echo "sh -n $f"; sh -n "$f"
           done
 
+      - name: libvirt recipe renders well-formed XML
+        run: |
+          set -e
+          sh deploy/libvirt/create-vm.sh -x -i armsense.qcow2 -w br0 -l network=default \
+            | python3 -c 'import sys, xml.dom.minidom; xml.dom.minidom.parseString(sys.stdin.read())'
+
       - name: Configuration sanity
         run: |
           set -e
