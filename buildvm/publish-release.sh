@@ -6,10 +6,13 @@
 set -eu
 . "$(dirname "$0")/common.sh"
 tag=${1:?tag}
+# gh needs the repository when run outside the checkout
+url=$(git -C "$B" remote get-url origin)
+repo=${url#*github.com[:/]}; repo=${repo%.git}
 "$B/sync-packages.sh" >/dev/null
 cd "$IMAGES"
 files=$(ls armsense-*.qcow2 armsense-*.iso 2>/dev/null)
 [ -n "$files" ] || { echo "no images in $IMAGES"; exit 1; }
 shasum -a 256 $files > "SHA256SUMS-images-$tag.txt"
-gh release upload "$tag" $files "SHA256SUMS-images-$tag.txt" --clobber
-gh release view "$tag"
+gh release upload -R "$repo" "$tag" $files "SHA256SUMS-images-$tag.txt" --clobber
+gh release view -R "$repo" "$tag"
