@@ -1,7 +1,7 @@
 # Upstream clones used for investigation (several GB); re-clone with the pinned branches.
 extras/
 
-# Build VM: disk, firmware vars, downloaded images, keys, runtime state.
+# Build VM state now lives in ~/.armsense/buildvm; these entries cover older layouts.
 buildvm/*.qcow2
 buildvm/*.raw
 buildvm/efivars*.fd

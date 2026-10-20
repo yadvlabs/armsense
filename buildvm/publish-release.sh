@@ -4,12 +4,12 @@
 #
 # Usage: ./publish-release.sh v0.1.0
 set -eu
-B=$(cd "$(dirname "$0")" && pwd)
+. "$(dirname "$0")/common.sh"
 tag=${1:?tag}
 "$B/sync-packages.sh" >/dev/null
-cd "$B/images"
+cd "$IMAGES"
 files=$(ls armsense-*.qcow2 armsense-*.iso 2>/dev/null)
-[ -n "$files" ] || { echo "no images in $B/images"; exit 1; }
-sha256sum $files > "SHA256SUMS-images-$tag.txt" 2>/dev/null || shasum -a 256 $files > "SHA256SUMS-images-$tag.txt"
+[ -n "$files" ] || { echo "no images in $IMAGES"; exit 1; }
+shasum -a 256 $files > "SHA256SUMS-images-$tag.txt"
 gh release upload "$tag" $files "SHA256SUMS-images-$tag.txt" --clobber
 gh release view "$tag"

@@ -1,26 +1,18 @@
 #!/bin/sh
-# Start (or report) the armsense FreeBSD arm64 build VM under QEMU/HVF.
-# Usage: ./run.sh [start|stop|status|console]
-set -e
-B=$(cd "$(dirname "$0")" && pwd)
-DISK=${DISK:-$B/armsense-build.qcow2}
-SEED=$B/seed.iso
-CODE=/opt/homebrew/share/qemu/edk2-aarch64-code.fd
-VARS=$B/efivars.fd
-PID=$B/qemu.pid
-MON=$B/monitor.sock
-SERIAL=$B/serial.log
-SSH_PORT=${SSH_PORT:-2222}
-CPUS=${CPUS:-10}
-MEM=${MEM:-32G}
-
-running() { [ -f "$PID" ] && kill -0 "$(cat "$PID")" 2>/dev/null; }
+# Start, stop or inspect the armsense FreeBSD arm64 build VM (QEMU/HVF on macOS).
+# Usage: ./run.sh [start|stop|status|console|monitor]
+# State lives in $ARMSENSE_VM_DIR (default ~/.armsense/buildvm); see setup-vm.sh.
+set -eu
+. "$(dirname "$0")/common.sh"
 
 case "${1:-start}" in
 start)
-	if running; then echo "already running (pid $(cat "$PID"))"; exit 0; fi
-	[ -f "$DISK" ] || { echo "missing $DISK"; exit 1; }
+	if vm_running; then echo "already running (pid $(cat "$PIDFILE")), ssh port $SSH_PORT"; exit 0; fi
+	[ -f "$DISK" ] || { echo "missing $DISK; run setup-vm.sh first"; exit 1; }
+	[ -f "$SEED" ] || { echo "missing $SEED; run setup-vm.sh first"; exit 1; }
+	[ -f "$VARS" ] || cp "$VARS_TEMPLATE" "$VARS"
 	: > "$SERIAL"
+	rm -f "$MONITOR"
 	exec qemu-system-aarch64 \
 		-name armsense-build \
 		-machine virt,accel=hvf,gic-version=3 \
@@ -36,25 +28,29 @@ start)
 		-device virtio-rng-pci \
 		-display none -vga none \
 		-serial file:"$SERIAL" \
-		-monitor unix:"$MON",server,nowait \
-		-pidfile "$PID" -daemonize
+		-monitor unix:"$MONITOR",server,nowait \
+		-pidfile "$PIDFILE" -daemonize
 	;;
 stop)
-	if running; then
-		echo system_powerdown | nc -U "$MON" >/dev/null 2>&1 || true
-		for i in $(seq 1 60); do running || { echo "stopped"; exit 0; }; sleep 1; done
-		echo "forcing"; kill "$(cat "$PID")"
+	if vm_running; then
+		echo system_powerdown | nc -U "$MONITOR" >/dev/null 2>&1 || true
+		for i in $(seq 1 90); do vm_running || { echo "stopped"; exit 0; }; sleep 1; done
+		echo "forcing"; kill "$(cat "$PIDFILE")"
 	else
 		echo "not running"
 	fi
 	;;
 status)
-	if running; then echo "running (pid $(cat "$PID")), ssh port $SSH_PORT"; else echo "not running"; fi
+	if vm_running; then echo "running (pid $(cat "$PIDFILE")), ssh port $SSH_PORT, state $S"; else echo "not running (state $S)"; fi
 	;;
 console)
 	tail -f "$SERIAL"
 	;;
+monitor)
+	# QEMU human monitor; e.g. 'info block', 'drive_backup -f hd0 /path/copy.qcow2 qcow2'
+	nc -U "$MONITOR"
+	;;
 *)
-	echo "usage: $0 [start|stop|status|console]"; exit 1
+	echo "usage: $0 [start|stop|status|console|monitor]"; exit 1
 	;;
 esac

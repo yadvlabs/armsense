@@ -10,6 +10,10 @@
 # Console: serial on stdio (Ctrl-A X to quit QEMU).
 set -eu
 T=$(cd "$(dirname "$0")" && pwd)
+# VM state (disks, firmware variables, pid/socket files, logs) lives outside
+# the repository so that `git clean -fdx` cannot remove it.
+S=${ARMSENSE_TESTVM_DIR:-$HOME/.armsense/testvm}
+mkdir -p "$S"
 # INSTANCE=<name> runs a second VM side by side: own EFI vars, pid, socket and
 # forwarded ports (GUI_PORT/HTTP_PORT/SSH_FWD_PORT, defaults 8443/8080/2223).
 INSTANCE=${INSTANCE:-test}
@@ -17,18 +21,18 @@ GUI_PORT=${GUI_PORT:-8443}
 HTTP_PORT=${HTTP_PORT:-8080}
 SSH_FWD_PORT=${SSH_FWD_PORT:-2223}
 CODE=/opt/homebrew/share/qemu/edk2-aarch64-code.fd
-VARS=$T/efivars-$INSTANCE.fd
+VARS=$S/efivars-$INSTANCE.fd
 [ -f "$VARS" ] || cp /opt/homebrew/share/qemu/edk2-arm-vars.fd "$VARS"
 MEM=${MEM:-2G}
 CPUS=${CPUS:-2}
 # SERIAL_LOG=<file>: run detached with the serial console written to the file
 # (pid in $T/qemu.pid); otherwise interactive on stdio (Ctrl-A X quits).
 if [ -n "${SERIAL_LOG:-}" ]; then
-	SERIAL_OPTS="-serial file:$SERIAL_LOG -pidfile $T/qemu-$INSTANCE.pid -daemonize"
+	SERIAL_OPTS="-serial file:$SERIAL_LOG -pidfile $S/qemu-$INSTANCE.pid -daemonize"
 elif [ -n "${SERIAL_SOCK:-}" ]; then
 	# detached, serial console on a unix socket; drive it with ./console.py
-	rm -f "$T/serial-$INSTANCE.sock"
-	SERIAL_OPTS="-serial unix:$T/serial-$INSTANCE.sock,server,nowait -pidfile $T/qemu-$INSTANCE.pid -daemonize"
+	rm -f "$S/serial-$INSTANCE.sock"
+	SERIAL_OPTS="-serial unix:$S/serial-$INSTANCE.sock,server,nowait -pidfile $S/qemu-$INSTANCE.pid -daemonize"
 else
 	SERIAL_OPTS="-serial mon:stdio"
 fi
@@ -41,7 +45,7 @@ disk)
 	;;
 iso)
 	ISO=${1:?installer iso}
-	DISK=${2:-$T/armsense-$INSTANCE.qcow2}
+	DISK=${2:-$S/armsense-$INSTANCE.qcow2}
 	[ -f "$DISK" ] || qemu-img create -q -f qcow2 "$DISK" 16G
 	BOOT="-drive file=$ISO,if=none,id=cd0,format=raw,readonly=on -device virtio-blk-pci,drive=cd0,bootindex=0"
 	;;

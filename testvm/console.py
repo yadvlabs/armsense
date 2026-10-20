@@ -9,10 +9,10 @@ appended to serial-console.log.
 """
 import os, re, socket, sys, time
 
-here = os.path.dirname(os.path.abspath(__file__))
+state = os.environ.get("ARMSENSE_TESTVM_DIR", os.path.expanduser("~/.armsense/testvm"))
 instance = os.environ.get("INSTANCE", "test")
-sock_path = os.path.join(here, f"serial-{instance}.sock")
-log_path = os.path.join(here, f"serial-console-{instance}.log")
+sock_path = os.path.join(state, f"serial-{instance}.sock")
+log_path = os.path.join(state, f"serial-console-{instance}.log")
 
 timeout = 20.0
 prompt = r"(\$ |# |login: |Password:|Enter an option: )$"
