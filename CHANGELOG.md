@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+(nothing yet)
+
+## v0.2.0 (2026-11-01)
+
+Hypervisor integration: guest agent, virtio console, lan-dhcp image flavour,
+libvirt recipe. Images built from the same pinned sources as v0.1.0.
+
 * `buildvm/setup-vm.sh` creates and bootstraps the build VM in one step;
   VM and test-VM state moved to `~/.armsense` (outside the checkout).
 * `build/vm/clean-build.sh` for from-scratch builds; upstream commits pinned
