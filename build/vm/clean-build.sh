@@ -72,6 +72,7 @@ log "phase 2: packages"
 sh "$HERE/phase2-poudriere.sh" setup > "$LOGS/phase2-setup.log" 2>&1
 sh "$HERE/phase2-poudriere.sh" bulk > "$LOGS/phase2-bulk.log" 2>&1 || true
 grep -E 'Built:.*Failed:' "$LOGS/phase2-bulk.log" | tail -1 | grep -o 'Built: [0-9]* *Failed: [0-9]* *Skipped: [0-9]*'
+! grep -q '\[crashed\]' "$LOGS/phase2-bulk.log" || { log "poudriere crashed"; grep -E 'Error' "$LOGS/phase2-bulk.log" | head -5; exit 1; }
 grep -q 'Failed: 0 ' "$LOGS/phase2-bulk.log" || { log "package build had failures"; grep -E 'Failed ports' "$LOGS/phase2-bulk.log"; exit 1; }
 
 log "phase 3: core packages and images"

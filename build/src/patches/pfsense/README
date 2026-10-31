@@ -1,0 +1,7 @@
+Patches applied by rename-src.sh on top of the renamed pfSense tree
+(after debrand-src.sh, before the commit that feeds the GUI source tarball).
+Generated against the pinned upstream commit; regenerate when the pin moves.
+
+console-virtio-ttyV0.patch  console_configure(): also keep a console-menu getty
+                            on /dev/ttyV0.0, the first virtio console (Apple
+                            Virtualization: MacVisor, UTM), on when it exists.

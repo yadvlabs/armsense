@@ -42,7 +42,8 @@ so you can enlarge the disk before the first boot (`qemu-img resize`).
 | WAN | first virtio NIC (`vtnet0`), DHCP client |
 | LAN | second virtio NIC (`vtnet1`), `192.168.1.1/24`, DHCP server `192.168.1.100-199` (lan-dhcp image: DHCP client, no DHCP server) |
 | Web GUI | `https://192.168.1.1/` on the LAN side (self-signed certificate); lan-dhcp image: `https://<LAN address from the console menu>/` |
-| Consoles | serial (115200 8N1) and EFI framebuffer, both active |
+| Consoles | serial (115200 8N1) and EFI framebuffer, both active; under Apple Virtualization the console menu runs on the first virtio console (`ttyV0.0`) |
+| Guest agent | QEMU guest agent, started automatically when the hypervisor offers a channel (QEMU/libvirt port `org.qemu.guest_agent.0`, or MacVisor's second serial port `ttyV1.0`); `virsh shutdown --mode agent` and MacVisor's Shut Down use it |
 
 Change the admin password at the first login; the dashboard reminds you
 while it is still the default.
@@ -86,6 +87,14 @@ network, and the console menu shows it as `LAN (lan) -> vtnet1 -> v4/DHCP4:
 same result is one console step away: menu option 2, LAN, answer `y` to
 "Configure IPv4 address LAN interface via DHCP" and `n` to the DHCP server.
 
+**Console and power.** Apple Virtualization has no PL011 UART for third-party
+apps, so the kernel prints nothing during boot; once the system is up the
+console menu runs on the first virtio serial port (`/dev/ttyV0.0`), which
+MacVisor shows as the VM's console. The QEMU guest agent starts on the
+second serial port (`/dev/ttyV1.0`, MacVisor's guest-agent port), so
+MacVisor can read the VM's addresses and shut it down or restart it cleanly.
+Both are on by default and need no setup in the guest.
+
 A NoCloud seed (cloud-init `cidata` volume) attached by the hypervisor is
 ignored by the appliance.
 
@@ -127,6 +136,10 @@ The settings that matter on any libvirt or Proxmox host:
   LAN; `host-passthrough` CPU, 2 vCPUs, 2 to 4 GB of RAM; a pty serial
   console (`virsh console <name>`). A display is optional, the EFI
   framebuffer shows the same menu.
+* a virtio-serial channel named `org.qemu.guest_agent.0` (in the recipe's
+  template): the guest agent in the image starts on it, so
+  `virsh shutdown --mode agent`, `virsh domifaddr --source agent` and
+  Proxmox's guest-agent features work.
 
 ### Changing the LAN address from the console
 

@@ -9,6 +9,9 @@ WWW=		https://www.pfsense.org/
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	pfSense-pkg-System_Patches>0:sysutils/pfSense-pkg-System_Patches
+# armsense: QEMU guest agent, started by /usr/local/etc/rc.d/qemu-guest-agent.sh
+# when the hypervisor offers a channel (QEMU/libvirt port or MacVisor's serial port).
+RUN_DEPENDS+=	qemu-guest-agent>0:emulators/qemu@guestagent
 
 USES=		metaport
 

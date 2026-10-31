@@ -9,6 +9,10 @@
 #          host forwards: https://127.0.0.1:8443 -> LAN GUI, ssh -p 2223 127.0.0.1 -> LAN ssh
 #          (LAN_IP=192.168.1.200 for the lan-dhcp image: QEMU's leases start there)
 # Console: serial on stdio (Ctrl-A X to quit QEMU).
+# VCONSOLES=n adds n single-port virtio serial consoles like Apple
+#   Virtualization/MacVisor (guest /dev/ttyV0.0.., sockets $S/vcon<i>-$INSTANCE.sock);
+# QGA_SOCK=1 adds a libvirt-style guest-agent channel org.qemu.guest_agent.0
+#   on $S/qga-$INSTANCE.sock (talk JSON to it: {"execute":"guest-ping"}).
 set -eu
 T=$(cd "$(dirname "$0")" && pwd)
 # VM state (disks, firmware variables, pid/socket files, logs) lives outside
@@ -37,6 +41,18 @@ elif [ -n "${SERIAL_SOCK:-}" ]; then
 	SERIAL_OPTS="-serial unix:$S/serial-$INSTANCE.sock,server,nowait -pidfile $S/qemu-$INSTANCE.pid -daemonize"
 else
 	SERIAL_OPTS="-serial mon:stdio"
+fi
+
+EXTRA=""
+i=0
+while [ "$i" -lt "${VCONSOLES:-0}" ]; do
+	rm -f "$S/vcon$i-$INSTANCE.sock"
+	EXTRA="$EXTRA -device virtio-serial-pci,id=vs$i,max_ports=1 -chardev socket,id=vc$i,path=$S/vcon$i-$INSTANCE.sock,server=on,wait=off -device virtconsole,bus=vs$i.0,chardev=vc$i"
+	i=$((i + 1))
+done
+if [ -n "${QGA_SOCK:-}" ]; then
+	rm -f "$S/qga-$INSTANCE.sock"
+	EXTRA="$EXTRA -device virtio-serial-pci,id=vsqga -chardev socket,id=qga,path=$S/qga-$INSTANCE.sock,server=on,wait=off -device virtserialport,bus=vsqga.0,chardev=qga,name=org.qemu.guest_agent.0"
 fi
 
 mode=${1:-}; shift || true
@@ -68,5 +84,6 @@ exec qemu-system-aarch64 \
 	-netdev user,id=lan,net=192.168.1.0/24,host=192.168.1.2,dhcpstart=192.168.1.200,hostfwd=tcp:127.0.0.1:${GUI_PORT}-${LAN_IP}:443,hostfwd=tcp:127.0.0.1:${HTTP_PORT}-${LAN_IP}:80,hostfwd=tcp:127.0.0.1:${SSH_FWD_PORT}-${LAN_IP}:22 \
 	-device virtio-net-pci,netdev=lan,mac=52:54:00:aa:00:02 \
 	-device virtio-rng-pci \
+	$EXTRA \
 	-display none -vga none \
 	$SERIAL_OPTS

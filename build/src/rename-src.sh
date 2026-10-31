@@ -74,6 +74,15 @@ rename_pfsense() {
 
 	debrand_pfsense
 
+	# armsense additions: files dropped into the tree (build/src/files/pfsense)
+	# and patches on top of the renamed sources (build/src/patches/pfsense).
+	cp -R "$HERE/files/pfsense/." src/
+	for p in "$HERE"/patches/pfsense/*.patch; do
+		[ -f "$p" ] || continue
+		log "pfsense: applying $(basename "$p")"
+		git apply "$p"
+	done
+
 	log "pfsense: remaining literal references (expect only comments/obsoleted lists):"
 	grep -rIn -- '/usr/local/share/pfSense\|/usr/local/pfSense\|/etc/pfSense-\|/etc/pfSense\.\|pfSense-upgrade\|pfSense-repoc\|pfSense-dhclient' src \
 	    | grep -v '\.po:\|\.pot:\|\.obsoletedfiles:' || true

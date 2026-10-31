@@ -4,4 +4,4 @@ sysutils/%%PRODUCT_NAME%%-default-config
 sysutils/%%PRODUCT_NAME%%-default-config-serial
 sysutils/%%PRODUCT_NAME%%-repo
 sysutils/%%PRODUCT_NAME%%-upgrade
-emulators/qemu-guest-agent
+emulators/qemu@guestagent

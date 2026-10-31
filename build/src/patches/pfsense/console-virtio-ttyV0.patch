@@ -1,0 +1,46 @@
+--- a/src/etc/inc/pfsense-utils.inc
++++ b/src/etc/inc/pfsense-utils.inc
+@@ -1387,6 +1387,11 @@
+ 	    "\"/usr/libexec/getty {$console_type}\"\txterm\tonifexists secure";
+ 	$ttyu_line =
+ 	    "\"/usr/libexec/getty {$serial_type}\"\tvt100\t{$on_off}\tsecure";
++	/* armsense: the first virtio console.  Apple Virtualization (MacVisor,
++	 * UTM) presents the VM console as /dev/ttyV0.0; start the console menu
++	 * there whenever the device exists, honouring the menu password setting. */
++	$vcon_line =
++	    "\"/usr/libexec/getty {$serial_type}\"\tvt100\tonifexists\tsecure";
+ 
+ 	$found = array();
+ 
+@@ -1396,7 +1401,11 @@
+ 			continue;
+ 		}
+ 
+-		if (stristr($tty, "ttyv0")) {
++		if (strpos($tty, "ttyV0.0") === 0) {
++			/* checked before ttyv0: stristr() would take ttyV0.0 for it */
++			$found['ttyV0.0'] = 1;
++			$data[] = "ttyV0.0\t{$vcon_line}";
++		} elseif (stristr($tty, "ttyv0")) {
+ 			$found['ttyv0'] = 1;
+ 			$data[] = "ttyv0\t{$virt_line}";
+ 		} elseif (stristr($tty, "xc0")) {
+@@ -1423,7 +1432,8 @@
+ 		'ttyu1',
+ 		'ttyu2',
+ 		'ttyu3',
+-		'xc0'
++		'xc0',
++		'ttyV0.0'
+ 	);
+ 
+ 	foreach ($items as $item) {
+@@ -1436,6 +1446,8 @@
+ 		} elseif (($item == 'ttyv0') || ($item == 'xc0')) {
+ 			/* xc0 - Xen console, see https://redmine.pfsense.org/issues/11402 */
+ 			$data[] = "{$item}\t{$virt_line}";
++		} elseif ($item == 'ttyV0.0') {
++			$data[] = "{$item}\t{$vcon_line}";
+ 		} else {
+ 			$data[] = "{$item}\t{$ttyu_line}";
+ 		}

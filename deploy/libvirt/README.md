@@ -33,6 +33,12 @@ Then:
 
     sudo virsh console armsense       # serial console with the menu; Ctrl-] detaches
     sudo virsh autostart armsense     # optional: start together with the host
+    sudo virsh shutdown --mode agent armsense   # clean shutdown through the guest agent
+
+The template includes a virtio-serial channel `org.qemu.guest_agent.0`; the
+QEMU guest agent in the image starts on it at boot, so `virsh shutdown
+--mode agent`, `virsh domifaddr --source agent armsense` and the guest-agent
+features of Proxmox and Cockpit work without any setup in the guest.
 
 The first NIC is WAN (DHCP client). The second is LAN at `https://192.168.1.1/`
 with a DHCP server; log in as `admin` / `armsense` and change the password.

@@ -7,6 +7,16 @@
 * `build/vm/clean-build.sh` for from-scratch builds; upstream commits pinned
   in `build/armsense.conf`.
 * SETUP.md (building from source) and a README "Get started" section.
+* QEMU guest agent on by default: `/usr/local/etc/rc.d/qemu-guest-agent.sh`
+  (in the system package; `qemu-guest-agent` is now a dependency of the
+  `-ce` meta package) starts it on the QEMU/libvirt channel
+  `org.qemu.guest_agent.0` or on MacVisor's guest-agent serial port
+  `ttyV1.0`, so hypervisors can shut the appliance down cleanly.
+* Console menu on the first virtio console (`ttyV0.0`, Apple Virtualization)
+  via a patch to `console_configure()`; `build/src/patches/pfsense/` and
+  `build/src/files/pfsense/` are applied by `rename-src.sh`.
+* `testvm/run.sh`: `VCONSOLES=n` adds MacVisor-style virtio serial consoles,
+  `QGA_SOCK=1` a libvirt-style guest-agent channel, both on unix sockets.
 * Second disk-image flavour `-lan-dhcp` (LAN as a DHCP client, no LAN DHCP
   server, WAN pinned as default gateway) for Apple Virtualization apps
   (MacVisor, UTM) and other hypervisors whose second network has its own
